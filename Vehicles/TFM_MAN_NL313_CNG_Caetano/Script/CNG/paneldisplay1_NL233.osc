@@ -1,0 +1,81 @@
+' original: Siemens VDO Panel 1
+' 2017.03 - pedropt10 modified
+
+{macro:disp1}
+	
+	(L.L.elec_busbar_main)
+	(L.L.door_0) 0.3 > &&
+	(L.L.display1_bremse_halte) &&
+	(L.L.display1_visible) 1 = &&
+			{if}
+		1 (S.L.display1_doorF)
+			{else}
+		0 (S.L.display1_doorF)
+			{endif}
+
+	(L.L.elec_busbar_main)
+	(L.L.door_3) 0.3 > &&
+	(L.L.display1_visible) 1 = &&
+			{if}
+		1 (S.L.display1_doorB)
+			{else}
+		0 (S.L.display1_doorB)
+			{endif}
+
+	(L.L.elec_busbar_main)
+	(L.L.door_5) 0.3 > &&
+	(L.L.display1_visible) 1 = &&
+			{if}
+		1 (S.L.display1_door3)
+			{else}
+		0 (S.L.display1_door3)
+			{endif}
+
+	(L.L.elec_busbar_main)
+	(L.L.cockpit_light_bremse_halte) !
+	(L.L.display1_visible) 1 = &&
+			{if}
+		1 (S.L.display1_bremse_halte)
+			{else}
+		0 (S.L.display1_bremse_halte)
+			{endif}
+
+	(L.L.elec_busbar_main)
+	(L.L.automatic_N_light) 1 = &&
+	(L.L.display1_visible) 1 = &&
+			{if}
+		1 (S.L.display1_automatic_N)
+			{else}
+		0 (S.L.display1_automatic_N)
+			{endif}
+
+	(L.L.elec_busbar_main)
+	(L.L.cockpit_light_feststellbremse) 1 = &&
+	(L.L.display1_visible) 1 = &&
+			{if}
+		1 (S.L.display1_feststellbremse)
+			{else}
+		0 (S.L.display1_feststellbremse)
+			{endif}
+
+	(L.L.elec_busbar_main)
+	(L.L.haltewunschlampe) 1 = &&
+	(L.L.display1_visible) 1 = &&
+			{if}
+		1 (S.L.display1_haltewunschlampe)
+			{else}
+		0 (S.L.display1_haltewunschlampe)
+			{endif}
+	
+	(L.L.elec_busbar_main)
+	(L.L.antrieb_retarder) 1 = &&
+	(L.L.display1_visible) 1 = &&
+	(L.L.cp_dummy_sw09) 0 = &&
+			{if}
+		1 (S.L.display1_retarder)
+			{else}
+		0 (S.L.display1_retarder)
+			{endif}
+	
+
+{end}

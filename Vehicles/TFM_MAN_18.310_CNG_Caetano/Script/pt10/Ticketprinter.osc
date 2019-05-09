@@ -1,0 +1,26 @@
+'##############
+'Ticketprinter-Script
+'#############
+
+
+'----------------------
+'	Init
+'----------------------
+
+{macro:ticketprinter_init}
+	"" (S.$.ticketprinter_display)
+{end}
+
+
+'----------------------
+'	Frame
+'----------------------
+
+{macro:ticketprinter_frame}
+	(L.L.elec_busbar_main)
+	{if}
+		"" (S.$.ticketprinter_display)
+	{endif}
+{end}
+
+

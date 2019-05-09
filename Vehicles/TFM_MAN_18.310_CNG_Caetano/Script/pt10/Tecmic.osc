@@ -1,0 +1,1486 @@
+'##############
+'TECMIC Script
+'##############
+'"PORTUGUÊS"
+
+'Portuguese IBIS (Integrated Board Information System)
+
+'(c) 15.04.2009 Rüdiger Hülsmann
+'(c) 17.09.2013 Marcel Kuhnt
+'(c) 22.06.2011 Markus Rabe
+'2017.03.29	pedropt10	Adapted for Tecmic
+'2018.08	pedropt10	Adapted for DataCar interaction
+'2018.11	pedropt10	Refurbished for Hispano and Camo N2
+'2019.01	pedropt10	Adapted for MAN CityGold CNG
+
+'Needs:
+'- Cockpit (Batterietrennschalter)
+'- Door (Haltestellenbremse)
+
+'--------------------------------------------------------------------------------
+
+'Tecmic modes:
+'	0:	Normal/Busstop display
+'	1:	Line/Course entry
+'	2:	Route entry
+'	3:	Destination entry
+'	4:	Error Wrong Route
+'	5:	Confirm trip ending
+'	6:	Error Wrong Destination
+'	7:	Debug: show Line-Matrix
+'	8:	Show Terminus
+'	9:	Info: Trip not started
+'	11:	Driver login
+'	12:	Driver login missing
+'	13:	Driver login error
+'	21:	Matrix options
+
+
+'----------------------
+'	Trigger
+'----------------------
+
+{trigger:IBIS_setmode_linie_kurs}
+
+	(L.L.elec_busbar_main)
+	(L.L.Tecmic_login_success) 1 = &&
+	{if}
+		0 (S.L.Tecmic_input) (S.L.Tecmic_input_count)
+		0 (S.L.Tecmic_modetimer)
+		1 (S.L.Tecmic_mode)
+		(T.L.ev_IBIS_piep)
+	{else}
+	(L.L.Tecmic_login_success) 0 =
+	{if}
+		12 (S.L.Tecmic_mode)
+		1 (S.L.IBIS_BlinkOn) (S.L.IBIS_BlinkInitial)
+		(L.S.GetTime) (S.L.IBIS_BlinkTimer)
+		(T.L.ev_IBIS_piep)
+	{endif}
+	{endif}
+	
+{end}
+
+{trigger:IBIS_setmode_route}
+
+	(L.L.elec_busbar_main)
+	(L.L.Tecmic_login_success) 1 = &&
+	{if}
+		0 (S.L.Tecmic_input) (S.L.Tecmic_input_count)
+		0 (S.L.Tecmic_modetimer)
+		2 (S.L.Tecmic_mode)
+		"" (S.$.Tecmic_Introduzir)
+		(T.L.ev_IBIS_piep)
+	{else}
+	(L.L.Tecmic_login_success) 0 =
+	{if}
+		12 (S.L.Tecmic_mode)
+		1 (S.L.IBIS_BlinkOn) (S.L.IBIS_BlinkInitial)
+		(L.S.GetTime) (S.L.IBIS_BlinkTimer)
+		(T.L.ev_IBIS_piep)
+	{endif}
+	{endif}
+	
+{end}
+
+{trigger:IBIS_setmode_ziel}
+
+	(L.L.elec_busbar_main)
+	(L.L.Tecmic_login_success) 1 = &&
+	{if}
+		0 (S.L.Tecmic_input) (S.L.Tecmic_input_count)
+		0 (S.L.Tecmic_modetimer)
+		3 (S.L.Tecmic_mode)
+		"" (S.$.Tecmic_Introduzir)
+		(T.L.ev_IBIS_piep)
+	{else}
+	(L.L.elec_busbar_main)
+	(L.L.Tecmic_login_success) 0 = &&
+	{if}
+		12 (S.L.Tecmic_mode)
+		1 (S.L.IBIS_BlinkOn) (S.L.IBIS_BlinkInitial)
+		(L.S.GetTime) (S.L.IBIS_BlinkTimer)
+		(T.L.ev_IBIS_piep)
+	{endif}
+	{endif}
+	
+{end}
+
+{trigger:IBIS_setmode_login}
+
+	(L.L.elec_busbar_main)
+	(L.L.Tecmic_login_success) 0 = &&
+	{if}
+		0 (S.L.Tecmic_input) (S.L.Tecmic_input_count)
+		0 (S.L.Tecmic_modetimer)
+		11 (S.L.Tecmic_mode)
+		(T.L.ev_IBIS_piep)
+	{else}
+	(L.L.elec_busbar_main)
+	(L.L.Tecmic_login_success) 1 = &&
+	{if}
+		10 (S.L.Tecmic_mode)
+		0 (S.L.Tecmic_modetimer)
+		(T.L.ev_IBIS_piep)
+	{endif}
+	{endif}
+	
+{end}
+
+
+{trigger:IBIS_setmode_matrix}
+
+	(L.L.elec_busbar_main)
+	(L.L.Tecmic_login_success) 1 = &&
+	{if}
+		0 (S.L.Tecmic_modetimer)
+		21 (S.L.Tecmic_mode)
+		(T.L.ev_IBIS_piep)
+	{else}
+	(L.L.elec_busbar_main)
+	(L.L.Tecmic_login_success) 0 = &&
+	{if}
+		12 (S.L.Tecmic_mode)
+		1 (S.L.IBIS_BlinkOn) (S.L.IBIS_BlinkInitial)
+		(L.S.GetTime) (S.L.IBIS_BlinkTimer)
+		(T.L.ev_IBIS_piep)
+	{endif}
+	{endif}
+	
+{end}
+
+{trigger:IBIS_setmode_login}
+
+	(L.L.elec_busbar_main)
+	(L.L.Tecmic_login_success) 0 = &&
+	{if}
+		0 (S.L.Tecmic_input) (S.L.Tecmic_input_count)
+		0 (S.L.Tecmic_modetimer)
+		11 (S.L.Tecmic_mode)
+		(T.L.ev_IBIS_piep)
+	{else}
+	(L.L.elec_busbar_main)
+	(L.L.Tecmic_login_success) 1 = &&
+	{if}
+		10 (S.L.Tecmic_mode)
+		0 (S.L.Tecmic_modetimer)
+		(T.L.ev_IBIS_piep)
+	{endif}
+	{endif}
+	
+{end}
+
+{trigger:IBIS_setmode_trip}
+
+	(L.L.elec_busbar_main)
+	{if}
+		(L.L.Tecmic_StopIndex) -1 =
+		(L.L.IBIS_RouteIndex) -1 = ||
+		(L.L.Tecmic_login_success) 0 = ||
+		{if}
+			1 (S.L.IBIS_BlinkOn) (S.L.IBIS_BlinkInitial)
+			(L.S.GetTime) (S.L.IBIS_BlinkTimer)
+			9 (S.L.Tecmic_mode)
+			0 (S.L.Tecmic_modetimer)
+		{else}
+			5 (S.L.Tecmic_mode)
+			0 (S.L.Tecmic_modetimer)
+			(T.L.ev_IBIS_piep)
+		{endif}
+	{endif}
+{end}
+
+{trigger:IBIS_eingabe}
+
+	(L.L.elec_busbar_main)
+	{if}
+'***********************
+' Eingabe Linie/Kurs:
+'***********************
+		(L.L.Tecmic_mode) 1 =
+		(L.L.Tecmic_login_success) 1 = &&
+		{if}
+
+			0 (S.L.Tecmic_mode)
+' Input teilen...
+'IBIS_Linie_Complex is used for matrix
+			(L.L.Tecmic_input) s0 (S.L.IBIS_Linie_Complex)
+
+			(L.L.Tecmic_input_count) 5 =
+			l0 0 = &&
+			{if}
+				(M.L.Tecmic_reset)
+			{endif}
+
+			l0 100 / trunc
+			(S.L.IBIS_LinieKurs)
+			l0 100 %
+			(S.L.IBIS_Linie_Suffix)
+			(M.L.Tecmic_SetComplexLineString)
+
+			(L.L.IBIS_LinieKurs) 100 * l0 + (M.V.GetRouteIndex) s1
+			-1 >
+			{if}
+				(M.L.Tecmic_SetRoute)
+				0 (S.L.Tecmic_modetimer)
+				8 (S.L.Tecmic_mode)
+				(M.L.Tecmic_RefreshBusstop)
+				(L.S.Time) (S.L.Tecmic_time_1)
+			{endif}
+		{else}
+'***********************
+' Eingabe Route:
+'***********************
+		(L.L.Tecmic_mode) 2 =
+		(L.L.Tecmic_login_success) 1 = &&
+		{if}
+			(L.L.Tecmic_input_mode)
+			{if}
+				(L.L.Tecmic_input_updown) s0
+			{else}
+				(L.L.Tecmic_input) s0
+			{endif}
+			l0 0 =
+			{if}
+				4 (S.L.Tecmic_mode)
+				1 (S.L.IBIS_BlinkOn) (S.L.IBIS_BlinkInitial)
+				(L.S.GetTime) (S.L.IBIS_BlinkTimer)
+				0 (S.L.IBIS_Route)
+			{else}
+				(L.L.IBIS_LinieKurs) 100 * l0 + (M.V.GetRouteIndex) s1
+				0 <
+				{if}
+					4 (S.L.Tecmic_mode)
+					1 (S.L.IBIS_BlinkOn) (S.L.IBIS_BlinkInitial)
+					(L.S.GetTime) (S.L.IBIS_BlinkTimer)
+					0 (S.L.IBIS_Route)
+				{else}
+					l0 (S.L.IBIS_Route)
+					(M.L.Tecmic_SetRoute)
+					(M.L.Tecmic_RefreshBusstop)
+					(M.L.Tecmic_PlayAnnouncement)
+					(L.S.Time) (S.L.Tecmic_time_1)
+					8 (S.L.Tecmic_mode)
+					0 (S.L.Tecmic_modetimer)
+					"" (S.$.Tecmic_Introduzir)
+				{endif}
+			{endif}
+		{else}
+'***********************
+' Eingabe Ziel:
+'***********************
+		(L.L.Tecmic_mode) 3 =
+		(L.L.Tecmic_login_success) 1 = &&
+		{if}
+'l0: inserted terminus index  l3: last existing inserted terminus code
+			(L.L.Tecmic_input_mode)
+			{if}
+				(L.L.Tecmic_input_updown_code) s3
+			{else}
+				(L.L.Tecmic_input) s3
+			{endif}
+			l3 (M.V.GetTerminusIndex) s0
+			0 <
+			{if}
+				6 (S.L.Tecmic_mode)
+				1 (S.L.IBIS_BlinkOn) (S.L.IBIS_BlinkInitial)
+				(L.S.GetTime) (S.L.IBIS_BlinkTimer)
+			{else}
+				l3 (S.L.IBIS_TerminusCode)
+				l0 (S.L.IBIS_TerminusIndex)
+'if timetable destination equal to inputted destination
+				(M.V.GetTTTerminusIndex) s1
+				l1 l0 =
+				{if}
+					-999 (S.L.IBIS_RouteIndex)
+					(M.L.Tecmic_SetRouteFromDest)
+					(M.L.Tecmic_RefreshBusstop)
+					(M.L.Tecmic_PlayAnnouncement)
+					(L.S.Time) (S.L.Tecmic_time_1)
+					0 (S.L.IBIS_Route)
+					8 (S.L.Tecmic_mode)
+					0 (S.L.Tecmic_modetimer)
+					"    ___ VIAGEM INICIADA" (S.$.Tecmic_Introduzir)
+				{else}
+					0 (S.L.IBIS_busstop) (S.L.Tecmic_StopIndex) (S.L.Tecmic_StopIndexOffset) (S.L.Tecmic_StopCount)
+					-1 (S.L.IBIS_RouteIndex)
+					0 (S.L.IBIS_Route)
+					(M.L.Tecmic_RefreshTerminusText)
+					"" (S.$.Tecmic_Paragem)
+					"" (S.$.act_busstop)
+					"" (S.$.IBIS_busstop_name)
+					1 (S.L.IBIS_BlinkOn) (S.L.IBIS_BlinkInitial)
+					(L.S.GetTime) (S.L.IBIS_BlinkTimer)
+					9 (S.L.Tecmic_mode)
+					0 (S.L.Tecmic_modetimer)
+				{endif}
+			{endif}
+		{else}
+'***********************
+' Confirm trip ending
+'***********************
+		(L.L.Tecmic_mode) 5 =
+		{if}
+			0 (S.L.IBIS_LinieKurs) (S.L.IBIS_Linie_Suffix) (S.L.IBIS_Linie_Complex)
+			(M.L.Tecmic_SetComplexLineString)
+			8 (S.L.Tecmic_mode)
+			0 (S.L.Tecmic_modetimer)
+			"   ___ VIAGEM TERMINADA" (S.$.Tecmic_Introduzir)
+		{else}
+'***********************
+' Eingabe Driver Code
+'***********************
+		(L.L.Tecmic_mode) 11 =
+		(L.L.Tecmic_login_success) 0 = &&
+		{if}
+			(L.L.Tecmic_input) 999 >
+			{if}
+				(L.L.Tecmic_input) (S.L.Tecmic_driver)
+				10 (S.L.Tecmic_mode)
+				1 (S.L.Tecmic_login_success)
+				"" (S.$.Tecmic_Introduzir)
+				(M.L.Tecmic_RefreshBusstop)
+			{else}
+				13 (S.L.Tecmic_mode)
+				1 (S.L.IBIS_BlinkOn) (S.L.IBIS_BlinkInitial)
+				(L.S.GetTime) (S.L.IBIS_BlinkTimer)
+				"" (S.$.Tecmic_Introduzir)
+			{endif}
+
+			0 (S.L.Tecmic_input)
+			0 (S.L.Tecmic_input_count)
+		{else}
+
+		(L.L.Tecmic_mode) 21 =
+		(L.L.Tecmic_login_success) 1 = &&
+		{if}
+			0 (S.L.Tecmic_modetimer)
+			8 (S.L.Tecmic_mode)
+			"    ___ PAINEL ALTERADO" (S.$.Tecmic_Introduzir)
+
+			(L.L.IBIS_TerminusIndex) 0 = !
+			(L.L.IBIS_RouteIndex) -1 = ! ||
+			{if}
+				(L.L.IBIS_TerminusIndex) 1 - (S.L.Matrix_TerminusIndex_Last)
+			{endif}
+		{else}
+
+		(L.L.Tecmic_mode) 4 =
+		(L.L.Tecmic_mode) 6 = ||
+		(L.L.Tecmic_mode) 7 = ||
+		(L.L.Tecmic_mode) 9 = ||
+		(L.L.Tecmic_mode) 10 = ||
+		{if}
+			(L.L.Tecmic_login_success) 1 =
+			{if}	
+				0 (S.L.Tecmic_mode)
+			{else}
+				11 (S.L.Tecmic_mode)
+			{endif}
+		{endif}
+		{endif}
+		{endif}
+		{endif}
+		{endif}
+		{endif}
+		{endif}
+		(T.L.ev_IBIS_piep)
+	{endif}
+	
+{end}
+
+{trigger:IBIS_1}
+	1 (M.L.Tecmic_Zahlentasten)
+{end}
+
+{trigger:IBIS_2}
+	2 (M.L.Tecmic_Zahlentasten)
+{end}
+
+{trigger:IBIS_3}
+	3 (M.L.Tecmic_Zahlentasten)
+{end}
+
+{trigger:IBIS_4}
+	4 (M.L.Tecmic_Zahlentasten)
+{end}
+
+{trigger:IBIS_5}
+	5 (M.L.Tecmic_Zahlentasten)
+{end}
+
+{trigger:IBIS_6}
+	6 (M.L.Tecmic_Zahlentasten)
+{end}
+
+{trigger:IBIS_7}
+	7 (M.L.Tecmic_Zahlentasten)
+{end}
+
+{trigger:IBIS_8}
+	8 (M.L.Tecmic_Zahlentasten)
+{end}
+
+{trigger:IBIS_9}
+	9 (M.L.Tecmic_Zahlentasten)
+{end}
+
+{trigger:IBIS_0}
+	0 (M.L.Tecmic_Zahlentasten)
+{end}
+
+{trigger:IBIS_loeschen}
+
+	(L.L.elec_busbar_main)
+	{if}
+		(L.L.Tecmic_input) 0 =
+		(L.L.Tecmic_input_count) 0 = &&
+		{if}
+			0 (S.L.Tecmic_mode)
+		{else}
+			0 (S.L.Tecmic_input) (S.L.Tecmic_input_count)
+		{endif}
+		(T.L.ev_IBIS_piep)
+	{endif}
+{end}
+
+{trigger:IBIS_vor}
+	(L.L.elec_busbar_main)
+	{if}
+		(L.L.Tecmic_mode) 0 = 
+		(L.L.Tecmic_mode) 8 = ||
+		{if}
+			(L.L.IBIS_busstop) (L.L.Tecmic_StopCount) 1 - <
+			(L.L.IBIS_RouteIndex) -1 > &&
+			{if}
+				(L.L.Tecmic_StopIndexOffset) 1 + (S.L.Tecmic_StopIndexOffset)
+				-99 (S.L.Tecmic_time_1)
+				(M.L.Tecmic_PlayAnnouncement)
+	
+				1 (S.L.Tecmic_DisplayStopVar)
+			{endif}
+		{else}
+		(L.L.Tecmic_mode) 21 =
+		{if}
+			(L.L.pt10_matrix_type) 1 =
+			{if}
+				(L.L.pt10_matrix_2linestyle) 1 =
+				{if}
+					2 (S.L.pt10_matrix_2linestyle)
+				{else}
+				(L.L.pt10_matrix_2linestyle) 2 =
+				{if}
+					0 (S.L.pt10_matrix_2linestyle)
+				{else}
+				(L.L.pt10_matrix_2linestyle) 0 =
+				{if}
+					1 (S.L.pt10_matrix_2linestyle)
+				{endif}
+				{endif}
+				{endif}
+			{else}
+			(L.L.pt10_matrix_type) 2 =
+			{if}
+				1 (S.L.pt10_matrix_2linestyle)
+			{else}
+			(L.L.pt10_matrix_type) 3 =
+			{if}
+				(L.L.pt10_matrix_RGB_color) 6 <
+				{if}
+					(L.L.pt10_matrix_RGB_color) 1 + (S.L.pt10_matrix_RGB_color)
+				{else}
+					0 (S.L.pt10_matrix_RGB_color)
+				{endif}
+			{endif}
+			{endif}
+			{endif}
+			0 (S.L.Tecmic_modetimer)
+		{else}
+		(L.L.Tecmic_mode) 2 =
+		{if}
+			1 (S.L.Tecmic_input_mode)
+			(L.L.Tecmic_input_updown) 99 <
+			{if}
+				(L.L.Tecmic_input_updown) 1 + (S.L.Tecmic_input_updown)
+			{else}
+				0 (S.L.Tecmic_input_updown)
+			{endif}
+			0 (S.L.Tecmic_modetimer)
+			(M.L.Tecmic_UpdateDest)
+		{else}
+		(L.L.Tecmic_mode) 3 =
+		{if}
+			1 (S.L.Tecmic_input_mode)
+			(L.L.Tecmic_input_updown) 999 <
+			{if}
+				(L.L.Tecmic_input_updown) 1 + (S.L.Tecmic_input_updown)
+			{else}
+				0 (S.L.Tecmic_input_updown)
+			{endif}
+			0 (S.L.Tecmic_modetimer)
+			(M.L.Tecmic_UpdateDest)
+		{endif}
+		{endif}
+		{endif}
+		{endif}
+		(T.L.ev_IBIS_piep)
+	{endif}
+{end}
+
+{trigger:IBIS_vor_stumm}
+	(L.L.elec_busbar_main) 
+	{if}
+		(L.L.Tecmic_mode) 0 = 
+		(L.L.Tecmic_mode) 8 = ||
+		{if}
+			(L.L.IBIS_busstop) (L.L.Tecmic_StopCount) 1 - <
+			(L.L.IBIS_RouteIndex) -1 > &&
+			{if}
+				(L.L.Tecmic_StopIndexOffset) 1 + (S.L.Tecmic_StopIndexOffset)
+				-99 (S.L.Tecmic_time_1)
+				(M.L.Tecmic_PlayAnnouncement)
+	
+				1 (S.L.Tecmic_DisplayStopVar)
+			{endif}
+		{else}
+		(L.L.Tecmic_mode) 2 =
+		{if}
+			1 (S.L.Tecmic_input_mode)
+			(L.L.Tecmic_input_updown) 99 <
+			{if}
+				(L.L.Tecmic_input_updown) 1 + (S.L.Tecmic_input_updown)
+			{else}
+				1 (S.L.Tecmic_input_updown)
+			{endif}
+			0 (S.L.Tecmic_modetimer)
+			(M.L.Tecmic_UpdateDest)
+		{else}
+		(L.L.Tecmic_mode) 3 =
+		{if}
+			1 (S.L.Tecmic_input_mode)
+			(L.L.Tecmic_input_updown) 999 <
+			{if}
+				(L.L.Tecmic_input_updown) 1 + (S.L.Tecmic_input_updown)
+			{else}
+				0 (S.L.Tecmic_input_updown)
+			{endif}
+			0 (S.L.Tecmic_modetimer)
+			(M.L.Tecmic_UpdateDest)
+		{endif}
+		{endif}
+		{endif}
+	{endif}
+{end}
+
+{trigger:IBIS_rueck}
+	(L.L.elec_busbar_main) 
+	{if}
+		(L.L.Tecmic_mode) 0 = 
+		(L.L.Tecmic_mode) 8 = ||
+		{if}
+			(L.L.IBIS_busstop) 0 >
+			(L.L.IBIS_RouteIndex) -1 > &&
+			{if}
+				(L.L.Tecmic_StopIndexOffset) 1 - (S.L.Tecmic_StopIndexOffset)
+				-99 (S.L.Tecmic_time_1)
+				(M.L.Tecmic_PlayAnnouncement)
+	
+				1 (S.L.Tecmic_DisplayStopVar)
+			{endif}
+		{else}
+		(L.L.Tecmic_mode) 21 =
+		{if}
+			(L.L.pt10_matrix_type) 1 =
+			{if}
+				(L.L.pt10_matrix_2linestyle) 1 =
+				{if}
+					0 (S.L.pt10_matrix_2linestyle)
+				{else}
+				(L.L.pt10_matrix_2linestyle) 2 =
+				{if}
+					1 (S.L.pt10_matrix_2linestyle)
+				{else}
+				(L.L.pt10_matrix_2linestyle) 0 =
+				{if}
+					2 (S.L.pt10_matrix_2linestyle)
+				{endif}
+				{endif}
+				{endif}
+			{else}
+			(L.L.pt10_matrix_type) 2 =
+			{if}
+				2 (S.L.pt10_matrix_2linestyle)
+			{else}
+			(L.L.pt10_matrix_type) 3 =
+			{if}
+				(L.L.pt10_matrix_RGB_color) 0 >
+				{if}
+					(L.L.pt10_matrix_RGB_color) 1 - (S.L.pt10_matrix_RGB_color)
+				{else}
+					6 (S.L.pt10_matrix_RGB_color)
+				{endif}
+			{endif}
+			{endif}
+			{endif}
+			0 (S.L.Tecmic_modetimer)
+		{else}
+		(L.L.Tecmic_mode) 2 =
+		{if}
+			1 (S.L.Tecmic_input_mode)
+			(L.L.Tecmic_input_updown) 0 >
+			{if}
+				(L.L.Tecmic_input_updown) 1 - (S.L.Tecmic_input_updown)
+			{else}
+				99 (S.L.Tecmic_input_updown)
+			{endif}
+
+			0 (S.L.Tecmic_modetimer)
+			(M.L.Tecmic_UpdateDest)
+		{else}
+		(L.L.Tecmic_mode) 3 =
+		{if}
+			1 (S.L.Tecmic_input_mode)
+			(L.L.Tecmic_input_updown) -1 >
+			{if}
+				(L.L.Tecmic_input_updown) 1 - (S.L.Tecmic_input_updown)
+			{else}
+				999 (S.L.Tecmic_input_updown)
+			{endif}
+			0 (S.L.Tecmic_modetimer)
+			(M.L.Tecmic_UpdateDest)
+		{endif}
+		{endif}
+		{endif}
+		{endif}
+		(T.L.ev_IBIS_piep)
+	{endif}
+{end}
+
+'Tecmic Light by Pedro Vendeira
+{trigger:Tecmic_Light}
+
+	(L.L.elec_busbar_main)
+	{if}
+		(L.L.Tecmic_Light) ! (S.L.Tecmic_Light) s1
+	{endif}
+
+{end}
+
+'----------------------
+'	Init
+'----------------------
+
+{macro:IBIS_init}
+	"     " (S.$.IBIS_Complex_Line)
+	0 (S.L.IBIS_busstop)
+	0 (S.L.Tecmic_mode)
+	0 (S.L.Tecmic_input) (S.L.Tecmic_input_count) (S.L.Tecmic_input_mode) (S.L.Tecmic_input_updown) (S.L.Tecmic_input_updown_code)
+	-1 (S.L.IBIS_RouteIndex)
+	"" (S.$.Tecmic_L1)
+	"" (S.$.Tecmic_L4)
+	"" (S.$.Tecmic_Paragem)
+	"" (S.$.Tecmic_EstadoMin)
+	"" (S.$.Tecmic_Estado)
+	"" (S.$.Tecmic_DataHora)
+	"" (S.$.Tecmic_Introduzir)
+	"" (S.$.Tecmic_Destino)
+	0 (S.L.Tecmic_StopIndex) (S.L.Tecmic_StopIndexComp) (S.L.Tecmic_StopCount)
+	0 (S.L.Tecmic_DisplayMoveProx) (S.L.Tecmic_DisplayMoveNome) (S.L.Tecmic_DisplayStopVar)
+	0 (S.L.Tecmic_login_success) (S.L.Tecmic_StopIndexOffset)
+	99999 (S.L.Tecmic_time_1)
+
+	"" (S.$.IBIS)
+	"" (S.$.IBIS_HSTanzeige)
+	"" (S.$.IBIS_Delay_min)
+	"" (S.$.IBIS_Delay_sec)
+	"" (S.$.IBIS_Delay_state)
+{end}
+
+
+'----------------------
+'	Frame
+'----------------------
+
+{macro:IBIS_frame}
+
+
+'pt10:Tecmic_Light
+	(L.L.Tecmic_Light) 0.9 > (L.L.elec_busbar_main) &&
+	(S.L.Tecmic_Backlight)
+	
+	(L.L.elec_busbar_main)
+	{if}
+'		(L.L.engine_n) $IntToStr (S.$.pt10_RPM)
+
+'		""
+'		"IB:" $+
+'		(L.L.IBIS_busstop) $IntToStr $+
+'		"  TT:" $+
+'		(M.V.GetTTBusstopIndex) $IntToStr $+
+'		"  OF:" $+
+'		(L.L.Tecmic_StopIndexOffset) $IntToStr $+
+'		"  CT:" $+
+'		(L.L.Tecmic_StopCount) $IntToStr $+
+'		(S.$.Tecmic_test)
+
+		(M.L.Tecmic_AutoStopAdvance)
+
+		(L.$.Matrix_Nr) (S.$.Tecmic_Linha)
+'----------------
+'Blinker laufen lassen:
+
+		(L.L.IBIS_BlinkTimer) s0 0 <
+		{if}
+			(L.S.GetTime) (S.L.IBIS_BlinkTimer) s0
+		{endif}
+
+' Wenn Zeit abgelaufen:
+		(L.S.GetTime) l0 - s0
+		1.2 > (L.L.IBIS_BlinkInitial) && l0 0.833 > ||
+		{if}
+			(L.L.IBIS_BlinkOn) ! (S.L.IBIS_BlinkOn)
+			0 (S.L.IBIS_BlinkInitial)
+			(L.S.GetTime) (S.L.IBIS_BlinkTimer)
+		{endif}
+
+' Zurückschalten in den Normalmodus (Tecmic_mode 0) nach 10 sec
+		(L.L.Tecmic_mode) 0 = !
+		{if}
+			(L.L.Tecmic_modetimer) (L.S.Timegap) + (S.L.Tecmic_modetimer)
+			(L.L.Tecmic_modetimer) 10 >=
+			{if}
+				(L.L.Tecmic_login_success) 1 =
+				{if}
+					0 (S.L.Tecmic_mode)
+				{else}
+					11 (S.L.Tecmic_mode)
+				{endif}
+			{endif}
+		{endif}
+
+
+'----------------
+'TECMIC: Display-Darstellung:
+
+
+'TECMIC: Data/hora se ligado
+'TECMIC: formato 13/11/84 01:21
+
+'	Tag:
+		(L.S.Day) "02" $IntToStrEnh "/" $+
+'	Monat:
+		(L.S.Month) "02" $IntToStrEnh $+ "/" $+
+'	Jahr:
+		(L.S.Year) $IntToStr 4 $SetLengthR $+ " " $+
+'	Stunden:
+		(L.S.Time) 3600 / s0 trunc s1 "02" $IntToStrEnh $+ ":" $+
+'	Minuten:
+		l0 l1 - 60 * trunc "02" $IntToStrEnh $+
+
+		16 $SetLengthL (S.$.Tecmic_DataHora)
+
+'TECMIC: EM VIAGEM NORMAL, se rota e linha validos
+'TECMIC: Rota e Ida ou Volta
+
+		(L.L.Tecmic_login_success) 1 =
+		{if}
+			(L.$.Matrix_Nr) "" $=			
+			{if}
+				"" "L:---" $+
+			{else}
+				"" "L:" $+ (L.$.Tecmic_Linha) 3 $SetLengthL $+
+			{endif}
+
+			(L.L.IBIS_Route) 0 >
+			(L.L.IBIS_RouteIndex) -1 > &&
+			{if}
+				" R:" $+
+				(L.L.IBIS_Route) 9 >
+				(L.L.IBIS_Route) 100 < &&
+				{if}
+					(L.L.IBIS_Route) "02" $IntToStrEnh $+
+					(L.L.IBIS_Route) 2 % 0.5 >
+					{if}
+						" IDA " $+
+					{else}
+						" VTA " $+
+					{endif}
+				{else}
+					(L.L.IBIS_Route) "01" $IntToStrEnh $+
+					(L.L.IBIS_Route) 2 % 0.5 >
+					{if}
+						" IDA  " $+
+					{else}
+						" VOLTA" $+
+					{endif}
+				{endif}
+			{else}
+				" R:-- " $+
+			{endif}
+
+			" D:" $+
+			(L.L.IBIS_TerminusCode) 0 >
+			{if}
+				(L.L.IBIS_TerminusCode) "03" $IntToStrEnh $+
+			{else}
+				"---" $+
+			{endif}
+			21 $SetLengthL (S.$.Tecmic_L4)
+
+			(L.L.IBIS_Route) 0 >
+			(L.L.IBIS_RouteIndex) -999 = ||
+			{if}
+				"SAEI LIGADO _G          EM VIAGEM NORMAL" (S.$.Tecmic_L1)
+			{else}
+				"SAEI LIGADO _G                          " (S.$.Tecmic_L1)
+			{endif}
+
+		{else}
+			"SAEI LIGADO _G      SERVIÇO NÃO INICIADO" (S.$.Tecmic_L1)
+
+			" " (S.$.Tecmic_L4)
+		{endif}
+		
+'TECMIC: linha
+		(L.L.Tecmic_mode) 1 =
+		{if}
+			"Introduzir linha:" 
+	
+			(L.L.Tecmic_input_count) 0 =
+			{if}
+				(L.$.IBIS_Complex_Line) $+
+			{else}	
+				" " 5 (L.L.Tecmic_input_count) - $* $+ (L.L.Tecmic_input) "0" (L.L.Tecmic_input_count) $IntToStr $+ $IntToStrEnh $+ 
+			{endif}
+			" " $+
+			23 $SetLengthL (S.$.Tecmic_Introduzir)
+		{else}
+
+'TECMIC: rota
+		(L.L.Tecmic_mode) 2 =
+		{if}
+			""
+			(L.L.Tecmic_input_mode)
+			{if}
+				"Introduzir rota:" $+ 
+				(L.L.Tecmic_input_updown) "02" $IntToStrEnh $+ 
+			{else}
+				"Introduzir rota:" " " 2 (L.L.Tecmic_input_count) - $* $+ (L.L.Tecmic_input) "0" (L.L.Tecmic_input_count) $IntToStr $+ $IntToStrEnh $+ 
+			{endif}
+			"     " $+
+			23 $SetLengthL (S.$.Tecmic_Introduzir)
+
+			(L.$.Tecmic_Destino) " " $= 
+			{if}
+				0 s4
+			{else}
+				1 s4
+			{endif}
+
+			"" 
+			"(_" $+
+			l4 !
+			{if}
+				" rota inválida " $+
+			{else}
+				(L.$.Tecmic_Destino) 15 $SetLengthL $+
+			{endif}
+			")" $+
+			(S.$.Tecmic_Paragem)
+
+		{else}
+
+'TECMIC: destino
+		(L.L.Tecmic_mode) 3 =
+		{if}
+			""
+			(L.L.Tecmic_input_mode)
+			{if}
+				"Introduzir destino:" $+ 
+				(L.L.Tecmic_input_updown_code) "03" $IntToStrEnh $+
+			{else}
+				"Introduzir destino:" " " 3 (L.L.Tecmic_input_count) - $* $+ (L.L.Tecmic_input) "0" (L.L.Tecmic_input_count) $IntToStr $+ $IntToStrEnh $+ 
+			{endif}
+			" " $+
+			23 $SetLengthL (S.$.Tecmic_Introduzir)
+			
+			(L.$.Tecmic_Destino) " " $= 
+			{if}
+				0 s4
+			{else}
+				1 s4
+			{endif}
+
+			"" 
+			"(_" $+
+			l4 !
+			{if}
+				" dest. inválido" $+
+			{else}
+				(L.$.Tecmic_Destino) 15 $SetLengthL $+
+			{endif}
+			")" $+
+			(S.$.Tecmic_Paragem)
+		{else}
+
+'TECMIC: codigo motorista
+		(L.L.Tecmic_mode) 10 =
+		{if}
+			""
+			"   Motorista " $+
+			(L.L.Tecmic_driver) $IntToStr $+
+			" - OK " $+
+			23 $SetLengthL (S.$.Tecmic_Introduzir)
+		{else}
+		(L.L.Tecmic_mode) 11 =
+		{if}
+			" Introduzir código:" " " 4 (L.L.Tecmic_input_count) - $* $+ (L.L.Tecmic_input) "0" (L.L.Tecmic_input_count) $IntToStr $+ $IntToStrEnh $+ 
+			23 $SetLengthL (S.$.Tecmic_Introduzir)
+		{else}
+
+'TECMIC: falta codigo motorista
+		(L.L.Tecmic_mode) 12 =
+		{if}
+			(L.L.IBIS_BlinkOn)
+			{if}
+				"  FALTA INICIAR SESSÃO " (S.$.Tecmic_Introduzir)
+			{else}
+				"" (S.$.Tecmic_Introduzir)
+			{endif}
+		{else}
+
+'TECMIC: codigo motorista errado
+		(L.L.Tecmic_mode) 13 =
+		{if}
+			(L.L.IBIS_BlinkOn)
+			{if}
+				"    CÓDIGO INVÁLIDO    " (S.$.Tecmic_Introduzir)
+				"(_4 digitos)" 18 $SetLengthR (S.$.Tecmic_Paragem)
+			{else}
+				"" (S.$.Tecmic_Introduzir)
+				"" (S.$.Tecmic_Paragem)
+			{endif}
+		{else}
+
+'TECMIC: erro rota/destino
+		(L.L.Tecmic_mode) 4 =
+		{if}
+			(L.L.IBIS_BlinkOn)
+			{if}
+				"     ROTA INVÁLIDA     " (S.$.Tecmic_Introduzir)
+			{else}
+				"" (S.$.Tecmic_Introduzir)
+			{endif}
+		{else}
+		(L.L.Tecmic_mode) 6 =
+		{if}
+			(L.L.IBIS_BlinkOn)
+			{if}
+				"    DESTINO INVÁLIDO   " (S.$.Tecmic_Introduzir)
+			{else}
+				"" (S.$.Tecmic_Introduzir)
+			{endif}
+		{else}
+'TECMIC: destino não activou viagem
+		(L.L.Tecmic_mode) 9 =
+		{if}
+			(L.L.IBIS_BlinkOn)
+			{if}
+				"  VIAGEM NÃO INICIADA  " (S.$.Tecmic_Introduzir)
+			{else}
+				"" (S.$.Tecmic_Introduzir)
+			{endif}
+
+			(L.$.Tecmic_Destino) 18 $SetLengthL (S.$.Tecmic_Paragem)
+		{else}
+'TECMIC: fim viagem
+		(L.L.Tecmic_mode) 5 =
+		{if}
+			" _ CONFIRMAR FIM VIAGEM" (S.$.Tecmic_Introduzir)
+		{else}
+
+'TECMIC:matrix options
+		(L.L.Tecmic_mode) 21 =
+		{if}
+			(L.L.pt10_matrix_2linestyle) s6
+			(L.L.pt10_matrix_type) 0 =
+			{if}
+				"_Painel: sem opções    " (S.$.Tecmic_Introduzir)
+			{else}
+			(L.L.pt10_matrix_type) 1 =
+			{if}
+				l6 1 =
+				{if}
+					"_Painel: LINHA1/linha2 " (S.$.Tecmic_Introduzir)
+				{else}
+				l6 2 =
+				{if}
+					"_Painel: linha1/LINHA2 " (S.$.Tecmic_Introduzir)
+				{else}
+				l6 0 =
+				{if}
+					"_Painel: linha1/linha2 " (S.$.Tecmic_Introduzir)
+				{endif}
+				{endif}
+				{endif}
+			{else}
+			(L.L.pt10_matrix_type) 2 =
+			{if}
+				l6 1 =
+				l6 0 = ||
+				{if}
+					"_Painel lat.: Linha 1  " (S.$.Tecmic_Introduzir)
+				{else}
+				l6 2 =
+				{if}
+					"_Painel lat.: Linha 2  " (S.$.Tecmic_Introduzir)
+				{endif}
+				{endif}
+			{else}
+			(L.L.pt10_matrix_type) 3 =
+			{if}
+				(L.L.pt10_matrix_RGB_color) 1 <
+				(L.L.pt10_matrix_RGB_color) 6 > ||
+				{if}
+					"_Cor fundo: sem cor    " (S.$.Tecmic_Introduzir)
+				{else}
+				(L.L.pt10_matrix_RGB_color) 1 =
+				{if}
+					"_Cor fundo: AZUL       " (S.$.Tecmic_Introduzir)
+				{else}
+				(L.L.pt10_matrix_RGB_color) 2 =
+				{if}
+					"_Cor fundo: VERDE      " (S.$.Tecmic_Introduzir)
+				{else}
+				(L.L.pt10_matrix_RGB_color) 3 =
+				{if}
+					"_Cor fundo: LARANJA    " (S.$.Tecmic_Introduzir)
+				{else}
+				(L.L.pt10_matrix_RGB_color) 4 =
+				{if}
+					"_Cor fundo: ROSA       " (S.$.Tecmic_Introduzir)
+				{else}
+				(L.L.pt10_matrix_RGB_color) 5 =
+				{if}
+					"_Cor fundo: VERMELHO   " (S.$.Tecmic_Introduzir)
+				{else}
+				(L.L.pt10_matrix_RGB_color) 6 =
+				{if}
+					"_Cor fundo: BRANCO     " (S.$.Tecmic_Introduzir)
+				{endif}
+				{endif}
+				{endif}
+				{endif}
+				{endif}
+				{endif}
+				{endif}
+			{endif}
+			{endif}
+			{endif}
+			{endif}
+		{else}
+'TECMIC: mostrar destino no campo da paragem 
+		(L.L.Tecmic_mode) 8 =
+		{if}
+			(L.$.IBIS_terminus_name) 18 $SetLengthL
+			(S.$.Tecmic_Paragem)
+		{else}
+			(L.L.Tecmic_mode) 2 = !
+			(L.L.Tecmic_mode) 3 = ! &&
+			(L.L.Tecmic_mode) 8 = ! &&
+			(L.L.Tecmic_mode) 9 = ! &&
+			(L.L.Tecmic_mode) 13 = ! &&
+			{if}
+				(L.$.IBIS_busstop_name) 18 $SetLengthL
+				(S.$.Tecmic_Paragem)
+			{endif}
+		{endif}
+		{endif}
+		{endif}
+		{endif}
+		{endif}
+		{endif}
+		{endif}
+		{endif}
+		{endif}
+		{endif}
+		{endif}
+		{endif}
+		{endif}
+
+		(L.L.Tecmic_mode) 0 =
+		{if}
+			"" (S.$.Tecmic_Introduzir)
+'TECMIC: tirar depois de testes
+'			(L.$.Tecmic_test) (S.$.Tecmic_Introduzir)
+		{endif}
+		
+'		(L.L.IBIS_Route) s2
+'		(L.L.IBIS_TerminusCode) s3
+		
+		"PROXIMA PARAGEM " (S.$.Tecmic_ProximaParagem)
+
+	{else}
+		"" (S.$.Tecmic_L1)
+		"" (S.$.Tecmic_L4)
+		"" (S.$.Tecmic_Paragem)
+		"" (S.$.Tecmic_EstadoMin)
+		"" (S.$.Tecmic_Estado)
+		"" (S.$.Tecmic_DataHora)
+		"" (S.$.Tecmic_Introduzir)
+	{endif}
+
+
+
+
+'Anzeigen der aktuellen Fahrplanlage:
+	(L.L.elec_busbar_main)
+	(L.L.Tecmic_login_success) 1 = &&
+	{if}
+		""
+		(M.V.GetTTDelay) s1 60 / s0
+
+		(L.L.Tecmic_StopIndex) -1 =
+		(L.L.IBIS_RouteIndex) -1 = ||
+		{if}
+			"" (S.$.Tecmic_EstadoMin)
+			"" (S.$.Tecmic_Estado)
+		{else}
+'			Minuten:
+			l0 abs trunc " 2" $IntToStrEnh $+  
+			(S.$.Tecmic_EstadoMin)
+
+			l1 abs 6 >=
+			{if}
+				l0 0 >
+				{if}
+					"ATRASO     minuto(s)" (S.$.Tecmic_Estado)
+				{else}
+					"AVANÇO     minuto(s)" (S.$.Tecmic_Estado)
+				{endif}
+			{else}
+				(L.L.Tecmic_StopIndex) 0 >=
+				{if}
+					"ATRASO     minuto(s)" (S.$.Tecmic_Estado)
+				{endif}
+			{endif}
+		{endif}
+	{else}
+		"" (S.$.Tecmic_EstadoMin) 
+		"" (S.$.Tecmic_Estado)
+	{endif}
+
+'Omsi sagen, dass die Strings-Ausgaben aktualisiert werden sollen:
+	1 (S.L.Refresh_Strings)
+
+'----------------
+'Last energy:
+	(L.L.elec_busbar_main) (S.L.IBIS_energy_last)
+
+
+'Display script
+'new variable: Tecmic_DisplayStopVar
+'0 = nothing displayed (after leaving stop)
+'1 = next stop + next stop name 
+'2 = only next stop name
+
+	(L.L.Tecmic_DisplayStopVar) 0 =
+	{if}
+		1 (S.L.Tecmic_DisplayMoveProx)
+		1 (S.L.Tecmic_DisplayMoveNome)
+	{endif}
+
+	(L.L.Tecmic_DisplayStopVar) 1 =
+	{if}
+		0 (S.L.Tecmic_DisplayMoveProx)
+		0 (S.L.Tecmic_DisplayMoveNome)
+	{endif}
+
+	(L.L.Tecmic_DisplayStopVar) 2 =
+	{if}
+		1 (S.L.Tecmic_DisplayMoveProx)
+		0 (S.L.Tecmic_DisplayMoveNome)
+	{endif}
+
+
+'variable changing script. does not work for skipped stops
+
+'state 2: at bus stop
+
+	(L.L.Door_0) 0 >
+	(L.L.Door_3) 0 > ||
+	(L.L.Tecmic_DisplayStopVar) 1 = &&
+	(L.L.Tecmic_StopIndex) (L.L.Tecmic_StopIndexComp) = &&
+	{if}
+		2 (S.L.Tecmic_DisplayStopVar)
+	{else}
+
+'state 0: bus leaves bus stop, internal stop index has not yet changed
+
+		(L.L.Velocity) 5 >=
+		(L.L.Tecmic_DisplayStopVar) 2 = &&
+		(L.L.Tecmic_StopIndex) (L.L.Tecmic_StopIndexComp) = &&
+		{if}
+			0 (S.L.Tecmic_DisplayStopVar)
+		{else}
+
+'state 1: if internal stop changed, update comparative index and
+'switch to this state no matter what the previous state was
+
+			(L.L.Tecmic_StopIndex) (L.L.Tecmic_StopIndexComp) >
+			(L.L.Tecmic_StopIndex) (L.L.Tecmic_StopIndexComp) < ||
+			(L.L.Tecmic_StopIndex) 0 >= &&
+			{if}
+				1 (S.L.Tecmic_DisplayStopVar)
+				(L.L.Tecmic_StopIndex) (S.L.Tecmic_StopIndexComp)
+			{endif}
+			
+			(L.L.Tecmic_StopIndex) -1 =
+			{if}
+				0 (S.L.Tecmic_DisplayStopVar)
+			{endif}
+		{endif}
+	{endif}
+
+{end}
+
+
+'----------------------
+'	Macros
+'----------------------
+
+'------------
+'Automatische Haltestellenfortschaltung 
+'Automatic busstop advancing
+'rearranged 2018.10
+
+{macro:Tecmic_AutoStopAdvance}
+	(M.V.GetTTBusstopIndex) s7
+	(M.V.GetTTTerminusIndex) (L.L.IBIS_TerminusIndex) =
+	{if}
+'both route and destination mode rely on TT index vs Tecmic_StopIndex comparison
+		(L.L.IBIS_RouteIndex) -999 =
+		{if}
+			l7 (L.L.IBIS_busstop) = !
+			(L.L.Tecmic_time_1) 10 + (L.S.Time) < &&
+			{if}
+				l7 (S.L.IBIS_Busstop) (S.L.Tecmic_StopIndex)
+				(M.L.Tecmic_RefreshBusstop)
+				(M.L.Tecmic_PlayAnnouncement)
+				(L.S.Time) (S.L.Tecmic_time_1)
+			{endif}
+		{else}
+			(L.L.IBIS_busstop) l7 (L.L.Tecmic_StopIndexOffset) + = !
+			{if}
+				(L.L.Tecmic_time_1) 10 + (L.S.Time) <
+				(L.L.IBIS_busstop) (L.L.Tecmic_StopCount) < &&
+				(L.L.IBIS_busstop) -1 > &&
+				{if}
+					l7 (L.L.Tecmic_StopIndexOffset) + (S.L.IBIS_busstop) (S.L.Tecmic_StopIndex)
+					(M.L.Tecmic_RefreshBusstop)
+					(M.L.Tecmic_PlayAnnouncement)
+					(L.S.Time) (S.L.Tecmic_time_1)
+				{endif}
+			{endif}
+		{endif}
+	{endif}
+{end}
+
+{macro:Tecmic_RefreshBusstop}
+
+	(L.L.IBIS_RouteIndex) -1 >
+	{if}
+'Setzen der String-Variable act_busstop für die OMSI-interne Berechnung und daraus Ableitung des globalen Haltestellenindexes:
+		(L.L.IBIS_RouteIndex) (L.L.Tecmic_StopIndex) (M.V.GetRouteBusstopIdent) (S.$.act_busstop)
+		(L.L.IBIS_RouteIndex) (L.L.Tecmic_StopIndex) (M.V.GetRouteBusstopIdent)
+		(M.V.GetBusstopIndex) (S.L.IBIS_busstop_index)
+'Sonst zeige die Bushaltestelle	
+		(L.L.IBIS_busstop_index) 3 (M.V.GetBusstopString) (S.$.IBIS_busstop_name)
+'		(L.L.IBIS_busstop_index) 0 (M.V.GetBusstopString) (S.$.act_busstop)
+	{else}
+		(L.L.IBIS_RouteIndex) -999 =
+		{if}
+			(L.L.Tecmic_StopIndex) (M.V.GetTTBusstopName) 35 $SetLength (S.$.act_busstop) (S.$.IBIS_busstop_name)
+		{else}
+			" " (S.$.act_busstop) (S.$.IBIS_busstop_name)
+		{endif}
+	{endif}
+
+{end}
+
+{macro:Tecmic_PlayAnnouncement}
+
+	(L.L.IBIS_busstop) -1 >
+	(L.$.act_busstop) " " $= ! &&
+	{if}
+		"..\..\Announcements\" 0 (M.V.GetDepotStringGlobal) "\" $+ $+ (L.$.act_busstop) $+ $msg
+
+		(L.L.IBIS_TerminusIndex) (L.L.Tecmic_StopIndex) =
+		(L.L.Tecmic_StopCount) 1 - (L.L.IBIS_busstop) = ||
+		{if}
+			"_#terminus" $+
+		{endif}
+
+		".wav" $+
+		(T.F.ev_IBIS_Ansagen)
+	{endif}
+{end}
+
+{macro:Tecmic_Zahlentasten}
+	s0
+	(L.L.elec_busbar_main)
+	{if}
+		(L.L.Tecmic_mode) 1 = (L.L.Tecmic_input_count) 5 < &&
+		(L.L.Tecmic_mode) 2 = (L.L.Tecmic_input_count) 2 < && ||
+		(L.L.Tecmic_mode) 3 = (L.L.Tecmic_input_count) 3 < && ||
+		(L.L.Tecmic_mode) 11 = (L.L.Tecmic_input_count) 4 < && ||
+		{if}
+			(L.L.Tecmic_input) 10 * l0 + (S.L.Tecmic_input)
+			(L.L.Tecmic_input_count) 1 + (S.L.Tecmic_input_count)
+		{else}
+		(L.L.Tecmic_mode) 1 = (L.L.Tecmic_input_count) 5 = &&
+		(L.L.Tecmic_mode) 2 = (L.L.Tecmic_input_count) 2 = && ||
+		(L.L.Tecmic_mode) 3 = (L.L.Tecmic_input_count) 3 = && ||
+		(L.L.Tecmic_mode) 11 = (L.L.Tecmic_input_count) 4 = && ||
+		{if}
+			l0 (S.L.Tecmic_input)
+			1 (S.L.Tecmic_input_count)
+		{else}
+			l0 0 =
+			{if}
+				9 (S.L.Tecmic_mode)
+			{endif}
+		{endif}
+		{endif}
+		0 (S.L.Tecmic_modetimer)
+		(T.L.ev_IBIS_piep)
+
+		(L.L.Tecmic_mode) 2 =
+		(L.L.Tecmic_mode) 3 = ||
+		{if}
+			0 (S.L.Tecmic_input_mode)
+			(M.L.Tecmic_UpdateDest)
+		{endif}
+	{endif}
+{end}
+
+{macro:Tecmic_SetRouteFromDest}
+	(M.V.GetTTBusstopCount) (S.L.Tecmic_StopCount)
+	(M.V.GetTTBusstopIndex) (S.L.Tecmic_StopIndex) (S.L.IBIS_busstop)
+	(M.L.Tecmic_RefreshTerminusText)
+{end}
+
+{macro:Tecmic_SetRoute}
+
+' Macro setzt den Routeindex auf den Wert von l1 und führt die nötigen Schritte aus
+	l1 (S.L.IBIS_RouteIndex)
+	(M.V.GetRouteTerminusIndex) (S.L.IBIS_TerminusIndex)
+	(M.V.GetTerminusCode) (S.L.IBIS_TerminusCode)
+	(M.L.Tecmic_RefreshTerminusText)
+
+	(L.L.IBIS_RouteIndex) (M.V.GetBusstopCount) (S.L.Tecmic_StopCount) s5
+
+	0 (S.L.IBIS_busstop) (S.L.Tecmic_StopIndex) (S.L.Tecmic_StopIndexOffset)
+
+	(L.L.IBIS_LinieKurs) s2 100 / trunc s3
+	l3 5 =
+	{if}
+		l2 100 * 5 (M.V.GetDepotStringGlobal) $StrToFloat 0 max (S.L.IBIS_Linie_Suffix) + (S.L.IBIS_Linie_Complex)
+	{endif}
+	l3 8 =
+	{if}
+		l2 100 * 4 (M.V.GetDepotStringGlobal) $StrToFloat 0 max (S.L.IBIS_Linie_Suffix) + (S.L.IBIS_Linie_Complex)
+	{endif}
+	l3 9 =
+	{if}
+		l2 100 * 3 (M.V.GetDepotStringGlobal) $StrToFloat 0 max (S.L.IBIS_Linie_Suffix) + (S.L.IBIS_Linie_Complex)
+	{endif}
+
+	(M.L.Tecmic_SetComplexLineString)
+{end}
+
+{macro:Tecmic_RefreshTerminusText}
+	(L.L.IBIS_TerminusIndex) 5 (M.V.GetTerminusString) (S.$.IBIS_terminus_name)
+	(C.L.pt10_MatrixControlUnit) 0 =
+	{if}
+		(L.L.IBIS_TerminusIndex) (S.L.pt10_Matrix_TerminusIndex)
+	{endif}
+{end}
+
+{macro:Tecmic_SetComplexLineString}
+'Linie/Kurs:
+	(L.L.IBIS_LinieKurs) s0 0 = !
+	{if}
+		l0 "03" $IntToStrEnh
+	{else}
+		"   "
+	{endif}
+	
+	(S.$.IBIS_Complex_Line)
+
+	(C.L.pt10_MatrixControlUnit) 0 =
+	{if}
+		(L.L.IBIS_Linie_Complex) (S.L.pt10_Matrix_Linie_Complex)
+		(L.L.IBIS_Linie_Suffix) (S.L.pt10_Matrix_Linie_Suffix)
+	{endif}
+{end}
+
+{macro:Tecmic_UpdateDest}
+	(L.L.Tecmic_mode) 2 =
+	{if}
+		(L.L.Tecmic_input_mode)
+		{if}
+			(L.L.Tecmic_input_updown) s5
+		{else}
+			(L.L.Tecmic_input) s5
+		{endif}
+		(L.L.IBIS_LinieKurs) 100 * l5 +
+		(M.V.GetRouteIndex)
+		(M.V.GetRouteTerminusIndex)
+		5 (M.V.GetTerminusString) (S.$.Tecmic_Destino)
+	{else}
+	(L.L.Tecmic_mode) 3 =
+	{if}
+		(L.L.Tecmic_input_mode)
+		{if}
+			(L.L.Tecmic_input_updown) (M.V.GetTerminusCode) s5
+			(S.L.Tecmic_input_updown_code)
+		{else}
+			(L.L.Tecmic_input) s5
+		{endif}
+		l5
+		(M.V.GetTerminusIndex)
+		5 (M.V.GetTerminusString) (S.$.Tecmic_Destino)
+	{endif}
+	{endif}
+{end}
+
+{macro:Tecmic_reset}
+	-1 (S.L.IBIS_RouteIndex)
+	0 (S.L.IBIS_Route) (S.L.IBIS_TerminusCode) (S.L.IBIS_TerminusIndex)
+	"" (S.$.IBIS_terminus_name)
+	0 (S.L.IBIS_busstop_index) (S.L.IBIS_busstop)
+	"" (S.$.act_busstop)
+	"" (S.$.IBIS_busstop_name)
+	0 (S.L.Tecmic_mode)
+	"" (S.$.Haltestelle)
+	0 (S.L.Tecmic_input) (S.L.Tecmic_input_count) (S.L.Tecmic_input_mode) (S.L.Tecmic_input_updown) (S.L.Tecmic_input_updown_code)
+
+	(C.L.pt10_MatrixControlUnit) 0 =
+	{if}
+		0 (S.L.pt10_Matrix_Linie_Complex) (S.L.pt10_Matrix_Linie_Suffix) (S.L.pt10_Matrix_TerminusIndex)
+		"" (S.$.Tecmic_Linha)
+	{endif}
+	"" (S.$.Tecmic_L1)
+	"" (S.$.Tecmic_L4)
+	"" (S.$.Tecmic_Paragem)
+	"" (S.$.Tecmic_EstadoMin)
+	"" (S.$.Tecmic_Estado)
+	"" (S.$.Tecmic_DataHora)
+	"" (S.$.Tecmic_Introduzir)
+
+	0 (S.L.Tecmic_StopIndex) (S.L.Tecmic_StopIndexComp) (S.L.Tecmic_StopCount) (S.L.Tecmic_StopIndexOffset)
+	0 (S.L.Tecmic_driver)
+	0 (S.L.Tecmic_login_success)
+	99999 (S.L.Tecmic_time_1)
+{end}

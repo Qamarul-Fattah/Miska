@@ -1,0 +1,5 @@
+screen2_pressure
+screen2_temperature
+screen3_fuel
+screen4_brakepressure
+screen4_brakepressuretank

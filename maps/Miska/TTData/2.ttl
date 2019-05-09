@@ -1,0 +1,1406 @@
+-----------------------
+Time Table Line File
+-----------------------
+
+Created with Omsi Version 2.3.004
+Date: 5/9/2019
+
+[userallowed]
+
+[priority]
+1
+------------------------------------
+
+[newtour]
+1
+SD01
+1023
+
+------------------------------------
+
+  Dep.: 5:0:0
+[addtrip]
+Route_2
+0
+300.000
+
+  Dep.: 5:14:0
+[addtrip]
+Route_2b
+0
+314.000
+
+  Dep.: 5:30:0
+[addtrip]
+Route_2
+0
+330.000
+
+  Dep.: 5:44:0
+[addtrip]
+Route_2b
+0
+344.000
+
+  Dep.: 6:0:0
+[addtrip]
+Route_2
+0
+360.000
+
+  Dep.: 6:14:0
+[addtrip]
+Route_2b
+0
+374.000
+
+  Dep.: 6:30:0
+[addtrip]
+Route_2
+0
+390.000
+
+  Dep.: 6:44:0
+[addtrip]
+Route_2b
+0
+404.000
+
+  Dep.: 7:0:0
+[addtrip]
+Route_2
+0
+420.000
+
+  Dep.: 7:14:0
+[addtrip]
+Route_2b
+0
+434.000
+
+  Dep.: 7:30:0
+[addtrip]
+Route_2
+0
+450.000
+
+  Dep.: 7:44:0
+[addtrip]
+Route_2b
+0
+464.000
+
+  Dep.: 8:0:0
+[addtrip]
+Route_2
+0
+480.000
+
+  Dep.: 8:14:0
+[addtrip]
+Route_2b
+0
+494.000
+
+  Dep.: 8:30:0
+[addtrip]
+Route_2
+0
+510.000
+
+  Dep.: 8:44:0
+[addtrip]
+Route_2b
+0
+524.000
+
+  Dep.: 9:0:0
+[addtrip]
+Route_2
+0
+540.000
+
+  Dep.: 9:14:0
+[addtrip]
+Route_2b
+0
+554.000
+
+  Dep.: 9:30:0
+[addtrip]
+Route_2
+0
+570.000
+
+  Dep.: 9:44:0
+[addtrip]
+Route_2b
+0
+584.000
+
+  Dep.: 10:0:0
+[addtrip]
+Route_2
+0
+600.000
+
+  Dep.: 10:14:0
+[addtrip]
+Route_2b
+0
+614.000
+
+  Dep.: 10:30:0
+[addtrip]
+Route_2
+0
+630.000
+
+  Dep.: 10:44:0
+[addtrip]
+Route_2b
+0
+644.000
+
+  Dep.: 11:0:0
+[addtrip]
+Route_2
+0
+660.000
+
+  Dep.: 11:14:0
+[addtrip]
+Route_2b
+0
+674.000
+
+  Dep.: 11:30:0
+[addtrip]
+Route_2
+0
+690.000
+
+  Dep.: 11:44:0
+[addtrip]
+Route_2b
+0
+704.000
+
+  Dep.: 12:0:0
+[addtrip]
+Route_2
+0
+720.000
+
+  Dep.: 12:14:0
+[addtrip]
+Route_2b
+0
+734.000
+
+  Dep.: 12:30:0
+[addtrip]
+Route_2
+0
+750.000
+
+  Dep.: 12:44:0
+[addtrip]
+Route_2b
+0
+764.000
+
+  Dep.: 13:0:0
+[addtrip]
+Route_2
+0
+780.000
+
+  Dep.: 13:14:0
+[addtrip]
+Route_2b
+0
+794.000
+
+  Dep.: 13:30:0
+[addtrip]
+Route_2
+0
+810.000
+
+  Dep.: 13:44:0
+[addtrip]
+Route_2b
+0
+824.000
+
+  Dep.: 14:0:0
+[addtrip]
+Route_2
+0
+840.000
+
+  Dep.: 14:14:0
+[addtrip]
+Route_2b
+0
+854.000
+
+  Dep.: 14:30:0
+[addtrip]
+Route_2
+0
+870.000
+
+  Dep.: 14:44:0
+[addtrip]
+Route_2b
+0
+884.000
+
+  Dep.: 15:0:0
+[addtrip]
+Route_2
+0
+900.000
+
+  Dep.: 15:14:0
+[addtrip]
+Route_2b
+0
+914.000
+
+  Dep.: 15:30:0
+[addtrip]
+Route_2
+0
+930.000
+
+  Dep.: 15:44:0
+[addtrip]
+Route_2b
+0
+944.000
+
+  Dep.: 16:0:0
+[addtrip]
+Route_2
+0
+960.000
+
+  Dep.: 16:14:0
+[addtrip]
+Route_2b
+0
+974.000
+
+  Dep.: 16:30:0
+[addtrip]
+Route_2
+0
+990.000
+
+  Dep.: 16:44:0
+[addtrip]
+Route_2b
+0
+1004.000
+
+  Dep.: 17:0:0
+[addtrip]
+Route_2
+0
+1020.000
+
+  Dep.: 17:14:0
+[addtrip]
+Route_2b
+0
+1034.000
+
+  Dep.: 17:30:0
+[addtrip]
+Route_2
+0
+1050.000
+
+  Dep.: 17:44:0
+[addtrip]
+Route_2b
+0
+1064.000
+
+  Dep.: 18:0:0
+[addtrip]
+Route_2
+0
+1080.000
+
+  Dep.: 18:14:0
+[addtrip]
+Route_2b
+0
+1094.000
+
+  Dep.: 18:30:0
+[addtrip]
+Route_2
+0
+1110.000
+
+  Dep.: 18:44:0
+[addtrip]
+Route_2b
+0
+1124.000
+
+  Dep.: 19:0:0
+[addtrip]
+Route_2
+0
+1140.000
+
+  Dep.: 19:14:0
+[addtrip]
+Route_2b
+0
+1154.000
+
+  Dep.: 19:30:0
+[addtrip]
+Route_2
+0
+1170.000
+
+  Dep.: 19:44:0
+[addtrip]
+Route_2b
+0
+1184.000
+
+  Dep.: 20:0:0
+[addtrip]
+Route_2
+0
+1200.000
+
+  Dep.: 20:14:0
+[addtrip]
+Route_2b
+0
+1214.000
+
+  Dep.: 20:30:0
+[addtrip]
+Route_2
+0
+1230.000
+
+  Dep.: 20:44:0
+[addtrip]
+Route_2b
+0
+1244.000
+
+  Dep.: 21:0:0
+[addtrip]
+Route_2
+0
+1260.000
+
+  Dep.: 21:14:0
+[addtrip]
+Route_2b
+0
+1274.000
+
+  Dep.: 21:30:0
+[addtrip]
+Route_2
+0
+1290.000
+
+  Dep.: 21:44:0
+[addtrip]
+Route_2b
+0
+1304.000
+
+  Dep.: 22:0:0
+[addtrip]
+Route_2
+0
+1320.000
+
+  Dep.: 22:14:0
+[addtrip]
+Route_2b
+0
+1334.000
+
+  Dep.: 22:30:0
+[addtrip]
+Route_2
+0
+1350.000
+
+  Dep.: 22:44:0
+[addtrip]
+Route_2b
+0
+1364.000
+
+  Dep.: 23:0:0
+[addtrip]
+Route_2
+0
+1380.000
+
+  Dep.: 23:14:0
+[addtrip]
+Route_2b
+0
+1394.000
+
+  Dep.: 23:30:0
+[addtrip]
+Route_2
+0
+1410.000
+
+  Dep.: 23:44:0
+[addtrip]
+Route_2b
+0
+1424.000
+
+------------------------------------
+
+[newtour]
+2
+SD02
+1023
+
+------------------------------------
+
+  Dep.: 5:10:0
+[addtrip]
+Route_2
+0
+310.000
+
+  Dep.: 5:24:0
+[addtrip]
+Route_2b
+0
+324.000
+
+  Dep.: 5:40:0
+[addtrip]
+Route_2
+0
+340.000
+
+  Dep.: 5:54:0
+[addtrip]
+Route_2b
+0
+354.000
+
+  Dep.: 6:10:0
+[addtrip]
+Route_2
+0
+370.000
+
+  Dep.: 6:24:0
+[addtrip]
+Route_2b
+0
+384.000
+
+  Dep.: 6:40:0
+[addtrip]
+Route_2
+0
+400.000
+
+  Dep.: 6:54:0
+[addtrip]
+Route_2b
+0
+414.000
+
+  Dep.: 7:10:0
+[addtrip]
+Route_2
+0
+430.000
+
+  Dep.: 7:24:0
+[addtrip]
+Route_2b
+0
+444.000
+
+  Dep.: 7:40:0
+[addtrip]
+Route_2
+0
+460.000
+
+  Dep.: 7:54:0
+[addtrip]
+Route_2b
+0
+474.000
+
+  Dep.: 8:10:0
+[addtrip]
+Route_2
+0
+490.000
+
+  Dep.: 8:24:0
+[addtrip]
+Route_2b
+0
+504.000
+
+  Dep.: 8:40:0
+[addtrip]
+Route_2
+0
+520.000
+
+  Dep.: 8:54:0
+[addtrip]
+Route_2b
+0
+534.000
+
+  Dep.: 9:10:0
+[addtrip]
+Route_2
+0
+550.000
+
+  Dep.: 9:24:0
+[addtrip]
+Route_2b
+0
+564.000
+
+  Dep.: 9:40:0
+[addtrip]
+Route_2
+0
+580.000
+
+  Dep.: 9:54:0
+[addtrip]
+Route_2b
+0
+594.000
+
+  Dep.: 10:10:0
+[addtrip]
+Route_2
+0
+610.000
+
+  Dep.: 10:24:0
+[addtrip]
+Route_2b
+0
+624.000
+
+  Dep.: 10:40:0
+[addtrip]
+Route_2
+0
+640.000
+
+  Dep.: 10:54:0
+[addtrip]
+Route_2b
+0
+654.000
+
+  Dep.: 11:10:0
+[addtrip]
+Route_2
+0
+670.000
+
+  Dep.: 11:24:0
+[addtrip]
+Route_2b
+0
+684.000
+
+  Dep.: 11:40:0
+[addtrip]
+Route_2
+0
+700.000
+
+  Dep.: 11:54:0
+[addtrip]
+Route_2b
+0
+714.000
+
+  Dep.: 12:10:0
+[addtrip]
+Route_2
+0
+730.000
+
+  Dep.: 12:24:0
+[addtrip]
+Route_2b
+0
+744.000
+
+  Dep.: 12:40:0
+[addtrip]
+Route_2
+0
+760.000
+
+  Dep.: 12:54:0
+[addtrip]
+Route_2b
+0
+774.000
+
+  Dep.: 13:10:0
+[addtrip]
+Route_2
+0
+790.000
+
+  Dep.: 13:24:0
+[addtrip]
+Route_2b
+0
+804.000
+
+  Dep.: 13:40:0
+[addtrip]
+Route_2
+0
+820.000
+
+  Dep.: 13:54:0
+[addtrip]
+Route_2b
+0
+834.000
+
+  Dep.: 14:10:0
+[addtrip]
+Route_2
+0
+850.000
+
+  Dep.: 14:24:0
+[addtrip]
+Route_2b
+0
+864.000
+
+  Dep.: 14:40:0
+[addtrip]
+Route_2
+0
+880.000
+
+  Dep.: 14:54:0
+[addtrip]
+Route_2b
+0
+894.000
+
+  Dep.: 15:10:0
+[addtrip]
+Route_2
+0
+910.000
+
+  Dep.: 15:24:0
+[addtrip]
+Route_2b
+0
+924.000
+
+  Dep.: 15:40:0
+[addtrip]
+Route_2
+0
+940.000
+
+  Dep.: 15:54:0
+[addtrip]
+Route_2b
+0
+954.000
+
+  Dep.: 16:10:0
+[addtrip]
+Route_2
+0
+970.000
+
+  Dep.: 16:24:0
+[addtrip]
+Route_2b
+0
+984.000
+
+  Dep.: 16:40:0
+[addtrip]
+Route_2
+0
+1000.000
+
+  Dep.: 16:54:0
+[addtrip]
+Route_2b
+0
+1014.000
+
+  Dep.: 17:10:0
+[addtrip]
+Route_2
+0
+1030.000
+
+  Dep.: 17:24:0
+[addtrip]
+Route_2b
+0
+1044.000
+
+  Dep.: 17:40:0
+[addtrip]
+Route_2
+0
+1060.000
+
+  Dep.: 17:54:0
+[addtrip]
+Route_2b
+0
+1074.000
+
+  Dep.: 18:10:0
+[addtrip]
+Route_2
+0
+1090.000
+
+  Dep.: 18:24:0
+[addtrip]
+Route_2b
+0
+1104.000
+
+  Dep.: 18:40:0
+[addtrip]
+Route_2
+0
+1120.000
+
+  Dep.: 18:54:0
+[addtrip]
+Route_2b
+0
+1134.000
+
+  Dep.: 19:10:0
+[addtrip]
+Route_2
+0
+1150.000
+
+  Dep.: 19:24:0
+[addtrip]
+Route_2b
+0
+1164.000
+
+  Dep.: 19:40:0
+[addtrip]
+Route_2
+0
+1180.000
+
+  Dep.: 19:54:0
+[addtrip]
+Route_2b
+0
+1194.000
+
+  Dep.: 20:10:0
+[addtrip]
+Route_2
+0
+1210.000
+
+  Dep.: 20:24:0
+[addtrip]
+Route_2b
+0
+1224.000
+
+  Dep.: 20:40:0
+[addtrip]
+Route_2
+0
+1240.000
+
+  Dep.: 20:54:0
+[addtrip]
+Route_2b
+0
+1254.000
+
+  Dep.: 21:10:0
+[addtrip]
+Route_2
+0
+1270.000
+
+  Dep.: 21:24:0
+[addtrip]
+Route_2b
+0
+1284.000
+
+  Dep.: 21:40:0
+[addtrip]
+Route_2
+0
+1300.000
+
+  Dep.: 21:54:0
+[addtrip]
+Route_2b
+0
+1314.000
+
+  Dep.: 22:10:0
+[addtrip]
+Route_2
+0
+1330.000
+
+  Dep.: 22:24:0
+[addtrip]
+Route_2b
+0
+1344.000
+
+  Dep.: 22:40:0
+[addtrip]
+Route_2
+0
+1360.000
+
+  Dep.: 22:54:0
+[addtrip]
+Route_2b
+0
+1374.000
+
+  Dep.: 23:10:0
+[addtrip]
+Route_2
+0
+1390.000
+
+  Dep.: 23:24:0
+[addtrip]
+Route_2b
+0
+1404.000
+
+  Dep.: 23:40:0
+[addtrip]
+Route_2
+0
+1420.000
+
+  Dep.: 23:54:0
+[addtrip]
+Route_2b
+0
+1434.000
+
+------------------------------------
+
+[newtour]
+3
+SD01
+1023
+
+------------------------------------
+
+  Dep.: 5:20:0
+[addtrip]
+Route_2
+0
+320.000
+
+  Dep.: 5:34:0
+[addtrip]
+Route_2b
+0
+334.000
+
+  Dep.: 5:50:0
+[addtrip]
+Route_2
+0
+350.000
+
+  Dep.: 6:4:0
+[addtrip]
+Route_2b
+0
+364.000
+
+  Dep.: 6:20:0
+[addtrip]
+Route_2
+0
+380.000
+
+  Dep.: 6:34:0
+[addtrip]
+Route_2b
+0
+394.000
+
+  Dep.: 6:50:0
+[addtrip]
+Route_2
+0
+410.000
+
+  Dep.: 7:4:0
+[addtrip]
+Route_2b
+0
+424.000
+
+  Dep.: 7:20:0
+[addtrip]
+Route_2
+0
+440.000
+
+  Dep.: 7:34:0
+[addtrip]
+Route_2b
+0
+454.000
+
+  Dep.: 7:50:0
+[addtrip]
+Route_2
+0
+470.000
+
+  Dep.: 8:4:0
+[addtrip]
+Route_2b
+0
+484.000
+
+  Dep.: 8:20:0
+[addtrip]
+Route_2
+0
+500.000
+
+  Dep.: 8:34:0
+[addtrip]
+Route_2b
+0
+514.000
+
+  Dep.: 8:50:0
+[addtrip]
+Route_2
+0
+530.000
+
+  Dep.: 9:4:0
+[addtrip]
+Route_2b
+0
+544.000
+
+  Dep.: 9:20:0
+[addtrip]
+Route_2
+0
+560.000
+
+  Dep.: 9:34:0
+[addtrip]
+Route_2b
+0
+574.000
+
+  Dep.: 9:50:0
+[addtrip]
+Route_2
+0
+590.000
+
+  Dep.: 10:4:0
+[addtrip]
+Route_2b
+0
+604.000
+
+  Dep.: 10:20:0
+[addtrip]
+Route_2
+0
+620.000
+
+  Dep.: 10:34:0
+[addtrip]
+Route_2b
+0
+634.000
+
+  Dep.: 10:50:0
+[addtrip]
+Route_2
+0
+650.000
+
+  Dep.: 11:4:0
+[addtrip]
+Route_2b
+0
+664.000
+
+  Dep.: 11:20:0
+[addtrip]
+Route_2
+0
+680.000
+
+  Dep.: 11:34:0
+[addtrip]
+Route_2b
+0
+694.000
+
+  Dep.: 11:50:0
+[addtrip]
+Route_2
+0
+710.000
+
+  Dep.: 12:4:0
+[addtrip]
+Route_2b
+0
+724.000
+
+  Dep.: 12:20:0
+[addtrip]
+Route_2
+0
+740.000
+
+  Dep.: 12:34:0
+[addtrip]
+Route_2b
+0
+754.000
+
+  Dep.: 12:50:0
+[addtrip]
+Route_2
+0
+770.000
+
+  Dep.: 13:4:0
+[addtrip]
+Route_2b
+0
+784.000
+
+  Dep.: 13:20:0
+[addtrip]
+Route_2
+0
+800.000
+
+  Dep.: 13:34:0
+[addtrip]
+Route_2b
+0
+814.000
+
+  Dep.: 13:50:0
+[addtrip]
+Route_2
+0
+830.000
+
+  Dep.: 14:4:0
+[addtrip]
+Route_2b
+0
+844.000
+
+  Dep.: 14:20:0
+[addtrip]
+Route_2
+0
+860.000
+
+  Dep.: 14:34:0
+[addtrip]
+Route_2b
+0
+874.000
+
+  Dep.: 14:50:0
+[addtrip]
+Route_2
+0
+890.000
+
+  Dep.: 15:4:0
+[addtrip]
+Route_2b
+0
+904.000
+
+  Dep.: 15:20:0
+[addtrip]
+Route_2
+0
+920.000
+
+  Dep.: 15:34:0
+[addtrip]
+Route_2b
+0
+934.000
+
+  Dep.: 15:50:0
+[addtrip]
+Route_2
+0
+950.000
+
+  Dep.: 16:4:0
+[addtrip]
+Route_2b
+0
+964.000
+
+  Dep.: 16:20:0
+[addtrip]
+Route_2
+0
+980.000
+
+  Dep.: 16:34:0
+[addtrip]
+Route_2b
+0
+994.000
+
+  Dep.: 16:50:0
+[addtrip]
+Route_2
+0
+1010.000
+
+  Dep.: 17:4:0
+[addtrip]
+Route_2b
+0
+1024.000
+
+  Dep.: 17:20:0
+[addtrip]
+Route_2
+0
+1040.000
+
+  Dep.: 17:34:0
+[addtrip]
+Route_2b
+0
+1054.000
+
+  Dep.: 17:50:0
+[addtrip]
+Route_2
+0
+1070.000
+
+  Dep.: 18:4:0
+[addtrip]
+Route_2b
+0
+1084.000
+
+  Dep.: 18:20:0
+[addtrip]
+Route_2
+0
+1100.000
+
+  Dep.: 18:34:0
+[addtrip]
+Route_2b
+0
+1114.000
+
+  Dep.: 18:50:0
+[addtrip]
+Route_2
+0
+1130.000
+
+  Dep.: 19:4:0
+[addtrip]
+Route_2b
+0
+1144.000
+
+  Dep.: 19:20:0
+[addtrip]
+Route_2
+0
+1160.000
+
+  Dep.: 19:34:0
+[addtrip]
+Route_2b
+0
+1174.000
+
+  Dep.: 19:50:0
+[addtrip]
+Route_2
+0
+1190.000
+
+  Dep.: 20:4:0
+[addtrip]
+Route_2b
+0
+1204.000
+
+  Dep.: 20:20:0
+[addtrip]
+Route_2
+0
+1220.000
+
+  Dep.: 20:34:0
+[addtrip]
+Route_2b
+0
+1234.000
+
+  Dep.: 20:50:0
+[addtrip]
+Route_2
+0
+1250.000
+
+  Dep.: 21:4:0
+[addtrip]
+Route_2b
+0
+1264.000
+
+  Dep.: 21:20:0
+[addtrip]
+Route_2
+0
+1280.000
+
+  Dep.: 21:34:0
+[addtrip]
+Route_2b
+0
+1294.000
+
+  Dep.: 21:50:0
+[addtrip]
+Route_2
+0
+1310.000
+
+  Dep.: 22:4:0
+[addtrip]
+Route_2b
+0
+1324.000
+
+  Dep.: 22:20:0
+[addtrip]
+Route_2
+0
+1340.000
+
+  Dep.: 22:34:0
+[addtrip]
+Route_2b
+0
+1354.000
+
+  Dep.: 22:50:0
+[addtrip]
+Route_2
+0
+1370.000
+
+  Dep.: 23:4:0
+[addtrip]
+Route_2b
+0
+1384.000
+
+  Dep.: 23:20:0
+[addtrip]
+Route_2
+0
+1400.000
+
+  Dep.: 23:34:0
+[addtrip]
+Route_2b
+0
+1414.000
+
+  Dep.: 23:50:0
+[addtrip]
+Route_2
+0
+1430.000
+
+  Dep.: 24:4:0
+[addtrip]
+Route_2b
+0
+1444.000
+

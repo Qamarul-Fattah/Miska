@@ -1,0 +1,12 @@
+visible_pub
+gear_button_type
+Tecmic_language
+visible_stamps
+visible_pub_ext
+fleet_number_color
+fleetnumber_front1
+fleetnumber_front2
+fleetnumber_back1
+fleetnumber_back2
+fleetnumber_side1
+fleetnumber_side2

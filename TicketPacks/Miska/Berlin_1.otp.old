@@ -1,0 +1,98 @@
+
+	Definiert ein System von Tickets und Kaufverhalten
+
+	[ticketpack]		Definiert allgemeine Eigenschaften des Ticket-Systems
+	{stamper_prop}		Wahrscheinlichkeit, dass beim Einsteigen abgestempelt wird
+	{ticketbuy_prop}	Wahrscheinlichkeit, dass beim Einsteigen eine Fahrkarte gekauft wird
+	{chattiness}		Wieviel reden die Fahrgäste? (Begrüßung, Danke...)
+	{whinge_prop}		Wieviel meckern die Fahrgäste?
+
+	[ticket]		Fügt einen Fahrkartentyp hinzu
+	{name}			Name in der Landessprache
+	{name_english}		Name in Englisch
+	{max_stations}		Anzahl der maximal zulässigen Haltestellen mit diesem Ticket (0 = beliebig)
+	{age_min}		Mindestalter für diese Fahrkarte
+	{age_max}		Höchstaler für diese Fahrkarte
+	{value}			Preis für diese Fahrkarte
+	{displaystring}		Anzeige-String für Fahrscheindrucker
+
+	[ticket_2]		Fügt einen Fahrkartentyp hinzu (Typ 2 mit Wahrscheinlichkeit)
+	{name}			s.o.
+	...			s.o.
+	{displaystring}		s.o.
+	{dayticket}		Tageskarten-Charakteristik: Je später, desto seltener wird sie gekauft. 1 = Tagesticket, 0 = normales Ticket
+	{propability}		Wahrscheinlichkeit, mit welcher diese Fahrkarte gekauft werden soll.
+				Bei Tageskarten ist dies der Wert bis 9:00 morgens; von 0:00 bis 9:00 steigt er linear von 0,
+				dann sinkt die Wahrscheinlichkeit bis 23:59 linear auf 0 zurück.
+
+
+***************************
+Ticketpack für Berlin 1989
+***************************
+
+[ticketpack]
+0.3
+0.2
+0.4
+0.2
+
+
+[ticket_2]
+Fahrschein
+Full rate
+0
+14
+200
+2.70
+Fahrschein Nor
+0
+1
+##############
+
+[ticket_2]
+Fahrschein-Kurzstrecke
+Short haul full rate
+6
+14
+200
+1.70
+Kurzstr Norm  
+0
+0.4
+##############
+
+[ticket_2]
+Tageskarte
+Day ticket
+0
+14
+200
+9.00
+Tageskarte Nor
+1
+0.2
+##############
+
+[ticket_2]
+Fahrschein (Ermäßigungstarif)
+Reduction rate
+0
+6
+13
+1.70
+Fahrschein Erm
+0
+1
+##############
+
+[ticket_2]
+Kurzstrecke (Ermäßigungstarif)
+Short haul reduction rate
+0
+6
+13
+1.20
+Kurzstr Erm   
+0
+0.4
+##############

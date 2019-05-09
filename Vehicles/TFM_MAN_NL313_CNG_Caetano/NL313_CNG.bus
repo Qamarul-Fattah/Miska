@@ -1,0 +1,454 @@
+﻿
+[friendlyname]
+Miska City Bus
+MAN NL 313 CNG
+Transport for Miska
+
+[description]
+The NL 313 CNG is a standard, low-floor, natural gas-fired bus, part of the A20 generation produced since 1996 by MAN. It features the 6-cylinder, 310 hp (228 kW) MAN E 2866 LUH 02 engine, which is in accordance with the Euro 3 standards regarding environmental issues. It features 2 axes, with double rear tyres. The automatic gearbox is Voith DIWA.3 class, specifically the D 864.3E.
+This version is based on the model with bodywork by Salvador Caetano, a well-known Portuguese company specialized in this field. In 2000, STCP (Porto bus operator) purchased 77 units, the first set of a generation of natural gas-fired buses that already features over 250 buses, with NL 313 CNG, Lion’s City NL CNG and Lion’s City NG CNG. 
+
+Some features:
+- 2 manual, hydraulic doors
+- MicroProcessador flipdot display
+- Tecmic control pad (Portuguese IBIS system)
+- Internal busstop display by MicroProcessador
+- Euro cashdesk
+- Many visual options for each repaint
+
+Technical data:
+Natural gas engine
+MAN E 2866 LUH 02, EURO III
+Rating: 228 kW (310 hp) at 2 000 rpm
+Cylinder layout: 6 cylinders, horizontally in line
+Bore/stroke: 128/155 mm
+Displacement: 11 967 cm3
+Max. torque: 1240 Nm at 1 100 – 1 600 rpm
+Compression ratio: 11:1
+Automatic gearbox: Voith D 864.3E
+
+Overall length: 11 950 mm
+Overall width: 2500 mm
+Overall height (with roof-mounted gas system): approx. 3 260 mm
+
+Included work by other authors:
+- Modified dashboard from the Mercedes-Benz O530 by alterr
+- Tecmic model and texture by Pedro Vendeira
+- Retarder sounds by Morphi
+- Base scripts for MAN NL202 by Marcel Kuhnt and Rüdiger Hülsmann
+[end]
+
+[number]
+No_NL313.org
+
+[registration_automatic]
+M-T 
+
+
+[kmcounter_init]
+2001
+60000
+
+[sound]
+sound\sound_NL313_CNG.cfg
+
+[sound_ai]
+sound\sound_NL313_CNG_AI.cfg
+
+[model]
+model\model_NL313.cfg
+
+[paths]
+model\paths_NL233.cfg
+
+[passengercabin]
+model\passengercabin_NL233.cfg
+
+	////////////////////////////////////////////////////////
+		Scripts
+	////////////////////////////////////////////////////////
+
+[varnamelist]
+22
+script\CNG\AI_varlist.txt
+script\CNG\antrieb_varlist.txt
+script\CNG\auspuff_varlist.txt
+script\CNG\bremse_varlist_O530.txt
+script\CNG\cashdesk_varlist.txt
+script\CNG\collision_varlist.txt
+script\CNG\cockpit_varlist.txt
+script\CNG\dirt_varlist.txt
+script\CNG\door_varlist.txt
+script\CNG\elec_varlist.txt
+script\CNG\engine_varlist.txt
+script\CNG\heizung_varlist.txt
+script\CNG\klappern_varlist.txt
+script\CNG\lights_varlist.txt
+script\CNG\rain_varlist.txt
+script\CNG\spray_varlist.txt
+script\CNG\ticketprinter_varlist.txt
+script\CNG\Vmatrix_varlist_NL233.txt
+script\CNG\wiper_varlist.txt
+script\CNG\IBIS_varlist.txt
+script\CNG\paneldisplay_varlist_NL233.txt
+script\CNG\visual_varlist_NL233.txt
+
+[stringvarnamelist]
+4
+script\CNG\Tecmic_stringvarlist.txt
+script\CNG\Vmatrix_stringvarlist.txt
+script\CNG\cockpit_stringvarlist.txt
+script\CNG\paneldisplay_stringvarlist_NL233.txt
+
+[script]
+29
+script\CNG\main_NL233.osc
+script\CNG\main_NL233_AI.osc
+script\CNG\Voith_DIWA.osc
+script\CNG\auspuff.osc
+script\CNG\bremse_O530.osc
+script\CNG\cashdesk.osc
+script\CNG\collision.osc
+script\CNG\cockpit_NL233.osc
+script\CNG\dirt.osc
+script\CNG\door_manual_NL233.osc
+script\CNG\elec.osc
+script\CNG\engine.osc
+script\CNG\forcefeedback.osc
+script\CNG\heizung.osc
+script\CNG\klappern.osc
+script\CNG\lights.osc
+script\CNG\rain.osc
+script\CNG\spray.osc
+script\CNG\sound_volume.osc
+script\CNG\Tickets_NL233.osc
+script\CNG\VMatrix_NL233.osc
+script\CNG\wiper.osc
+script\CNG\Tecmic.osc
+script\CNG\visual.osc
+script\CNG\paneldisplay_NL233.osc
+script\CNG\paneldisplay1_NL233.osc
+script\CNG\paneldisplay2_NL233.osc
+script\CNG\paneldisplay3_NL233.osc
+script\CNG\paneldisplay4_NL233.osc
+
+[constfile]
+18
+script\CNG\AI_constfile.txt
+script\CNG\Voith_NL233.txt
+script\CNG\auspuff_constfile.txt
+script\CNG\bremse_constfile_O530.txt
+script\CNG\cockpit_constfile.txt
+script\CNG\collision_constfile.txt
+script\CNG\dirt_constfile.txt
+script\CNG\door_constfile_D92.txt
+script\CNG\elec_constfile.txt
+script\CNG\engine_constfile_NL313.txt
+script\CNG\forcefeedback_constfile.txt
+script\CNG\heizung_constfile.txt
+script\CNG\klappern_constfile.txt
+script\CNG\lights_constfile.txt
+script\CNG\wiper_constfile.txt
+script\CNG\IBIS_constfile.txt
+script\CNG\Vmatrix_constfile_NL233.txt
+script\CNG\paneldisplay_constfile_NL233.txt
+
+
+
+	////////////////////////////////////////////////////////
+		Kameras *NEU01*
+	////////////////////////////////////////////////////////
+
+	0: Blick nach ganz links
+[add_camera_driver]
+-1.5
+4.68
+1.84
+-0.06
+55
+-170
+-5
+	1: Blick nach schrдg links
+[add_camera_driver]
+-0.713
+4.68
+1.84
+-0.06
+55
+-60
+-5
+	2: Blick in den linken Spiegel
+[add_camera_driver]
+-0.713
+4.68
+1.84
+-0.06
+55
+-30
+2
+
+	3: Blick nach vorne (std)
+[add_camera_driver]
+-0.713
+4.68
+1.84
+-0.06
+65
+0
+-10
+
+
+
+
+	4: Blick in den rechten Spiegel
+[add_camera_driver]
+-0.713
+4.68
+1.84
+-0.06
+55
+33
+-10
+
+	5: Blick zur Tu4r
+[add_camera_driver]
+-0.713
+4.68
+1.84
+-0.06
+55
+70
+-10
+
+	6: Fahrscheinverkauf-Sicht
+[add_camera_driver]
+-0.713
+4.78
+1.84
+-0.06
+50
+60
+-35
+
+[view_ticketselling]
+
+
+	7: Blick nach ganz rechts
+[add_camera_driver]
+0
+4.68
+1.78
+-0.06
+55
+160
+-10
+
+
+	8: Panel-Zoom
+[add_camera_driver]
+-0.713
+5
+2.25
+-0.06
+55
+5
+-70
+
+	7: Fahrplan-Sicht
+[add_camera_driver]
+-0.38
+5.40
+1.58
+-0.06
+50
+19
+-10
+[view_schedule]
+
+
+
+################
+Passagiersichten
+################
+
+
+	0: Hinten mittig sitzend
+[add_camera_pax]
+0.0
+-5.9
+2.3
+-0.06
+45
+0
+0
+
+	1: Stehplatz an der Hintertür
+[add_camera_pax]
+-1
+-1.05
+2.2
+-0.06
+45
+90
+0
+	2: vorne auf dem "Beifahrersitz"
+[add_camera_pax]
+0.8
+3.6
+2.1
+-0.06
+45
+-20
+0
+
+	2: Stehplatz an der Hintertür
+[add_camera_pax]
+-1
+-1.05
+2.2
+-0.06
+45
+15
+0
+
+
+	3: Stehplatz vorne, mitte, sieht nach hinten
+[add_camera_pax]
+0.0
+4
+2.4
+-0.06
+45
+-180
+-10
+
+
+
+
+
+	Folgender Befehl setzt die Standardfahrerkamera:
+
+[set_camera_std]
+3
+
+	Folgender Befehl setzt den Zentrierpunkt der AuЯenkamera:
+
+[set_camera_outside_center]
+0
+0
+1.2
+
+
+
+	////////////////////////////////////////////////////////
+		Reflexionskameras *NEU01*
+	////////////////////////////////////////////////////////
+
+[add_camera_reflexion_2]
+-1.353
+5.725
+1.908
+0
+52
+169
+-10
+0.15
+
+[add_camera_reflexion]
+1.247
+5.912
+2.136
+0
+52
+201
+-10
+
+[add_camera_reflexion]
+0
+5.505
+2.556
+0
+40
+200
+-22
+
+	////////////////////////////////////////////////////////
+		Physikalische und geometrische Grunddaten
+	////////////////////////////////////////////////////////
+
+[mass]
+10.2
+
+	Trägheitsmomente um x, y und z-Achse, also Quer-, Längs- und Hochachse um den Schwerpunkt in dieser Reihenfolge in t*m^2:
+600
+250
+600
+
+[momentofintertia]
+600
+90
+400
+
+[boundingbox]
+2.52
+12
+2.5
+0
+0.04
+1.7
+
+[schwerpunkt]
+1.0
+
+[rollwiderstand]
+1000
+
+[rot_pnt_long]
+-2.98
+
+[inv_min_turnradius]
+0.16
+
+[ai_deltaheight]
+-0.10
+
+	Vorderachse:
+
+
+[newachse]
+achse_long
+3.226
+achse_maxwidth
+2.4
+achse_minwidth
+1.83
+achse_raddurchmesser
+0.95448
+achse_feder
+240
+achse_maxforce
+90
+achse_daempfer
+14
+achse_antrieb
+0
+
+	Hinterachse:
+
+[newachse]
+achse_long
+-2.648
+achse_maxwidth
+2.4
+achse_minwidth
+1.17
+achse_raddurchmesser
+0.95448
+achse_feder
+280
+achse_maxforce
+116
+achse_daempfer
+14
+achse_antrieb
+1

@@ -1,0 +1,127 @@
+'##############
+'Visual Script
+'##############
+
+'FOR MAN NL 233 CNG and NL 313 CNG
+'2017.05 pedropt10
+
+'------------------------------------------------------------------------------------------
+
+{macro:Visual_init}
+	(L.L.gear_button_type)
+	(L.L.visible_pub)
+	(L.L.visible_pub_ext)
+	(L.L.visible_stamps)
+	(L.L.fleet_number_color)
+{end}
+
+{macro:FleetNumber_frame}
+	(L.L.fleet_number_color) s0
+
+	l0 1 =
+	{if}
+		0 (S.L.fleetnumber_front1)
+		1 (S.L.fleetnumber_front2)
+		0 (S.L.fleetnumber_back1)
+		1 (S.L.fleetnumber_back2)
+		0 (S.L.fleetnumber_side1)
+		1 (S.L.fleetnumber_side2)
+
+	{else}
+
+	l0 2 =
+	{if}
+		1 (S.L.fleetnumber_front1)
+		0 (S.L.fleetnumber_front2)
+		1 (S.L.fleetnumber_back1)
+		0 (S.L.fleetnumber_back2)
+		1 (S.L.fleetnumber_side1)
+		0 (S.L.fleetnumber_side2)
+
+	{else}
+
+	l0 3 =
+	{if}
+		0 (S.L.fleetnumber_front1)
+		1 (S.L.fleetnumber_front2)
+		0 (S.L.fleetnumber_back1)
+		1 (S.L.fleetnumber_back2)
+		1 (S.L.fleetnumber_side1)
+		0 (S.L.fleetnumber_side2)
+
+	{else}
+
+	l0 4 =
+	{if}
+		1 (S.L.fleetnumber_front1)
+		0 (S.L.fleetnumber_front2)
+		1 (S.L.fleetnumber_back1)
+		0 (S.L.fleetnumber_back2)
+		0 (S.L.fleetnumber_side1)
+		1 (S.L.fleetnumber_side2)
+
+	{else}
+
+	l0 5 =
+	{if}
+		0 (S.L.fleetnumber_front1)
+		1 (S.L.fleetnumber_front2)
+		1 (S.L.fleetnumber_back1)
+		0 (S.L.fleetnumber_back2)
+		1 (S.L.fleetnumber_side1)
+		0 (S.L.fleetnumber_side2)
+
+	{else}
+
+	l0 6 =
+	{if}
+		1 (S.L.fleetnumber_front1)
+		0 (S.L.fleetnumber_front2)
+		0 (S.L.fleetnumber_back1)
+		1 (S.L.fleetnumber_back2)
+		0 (S.L.fleetnumber_side1)
+		1 (S.L.fleetnumber_side2)
+
+	{else}
+
+	l0 7 =
+	{if}
+		0 (S.L.fleetnumber_front1)
+		1 (S.L.fleetnumber_front2)
+		1 (S.L.fleetnumber_back1)
+		0 (S.L.fleetnumber_back2)
+		0 (S.L.fleetnumber_side1)
+		1 (S.L.fleetnumber_side2)
+
+	{else}
+
+	l0 8 =
+	{if}
+		1 (S.L.fleetnumber_front1)
+		0 (S.L.fleetnumber_front2)
+		0 (S.L.fleetnumber_back1)
+		1 (S.L.fleetnumber_back2)
+		1 (S.L.fleetnumber_side1)
+		0 (S.L.fleetnumber_side2)
+
+	{else}
+
+	l0 0 =
+	l0 8 > ||
+	{if}
+		1 (S.L.fleetnumber_front1)
+		1 (S.L.fleetnumber_front2)
+		1 (S.L.fleetnumber_back1)
+		1 (S.L.fleetnumber_back2)
+		1 (S.L.fleetnumber_side1)
+		1 (S.L.fleetnumber_side2)
+	{endif}
+	{endif}
+	{endif}
+	{endif}
+	{endif}
+	{endif}
+	{endif}
+	{endif}
+	{endif}
+{end}

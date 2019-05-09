@@ -1,0 +1,145 @@
+'##############
+'Siemens VDO Script
+'##############
+
+'by Wizard
+
+'2017.02.28 - pedropt10 - added Retarder symbol
+
+'2017.03.17 - pedropt10 - big changes to control display screens and measurements
+
+
+{trigger:comp_button_up}
+
+	(L.L.number_of_display) 1 + (S.L.number_of_display)
+
+	(L.L.number_of_display) 4 >
+	{if}
+		1 (S.L.number_of_display)
+	{endif}
+
+	1 (S.L.comp_button_up_mode) s0
+	(M.L.kippschaltersound)
+
+{end}
+
+{trigger:comp_button_up_off}
+ 
+	0 (S.L.comp_button_up_mode) s0
+
+{end}
+
+
+{trigger:comp_button_down}
+
+	(L.L.number_of_display) 1 - (S.L.number_of_display)
+
+	(L.L.number_of_display) 1 <
+	{if}
+		4 (S.L.number_of_display)
+	{endif}
+
+	1 (S.L.comp_button_down_mode) s0
+	(M.L.kippschaltersound)
+{end}
+
+{trigger:comp_button_down_off}
+ 
+	0 (S.L.comp_button_down_mode) s0
+
+{end}
+
+
+{macro:Siemens_VDO_frame}
+
+'Make active display visible
+
+	(L.L.number_of_display) 1 =
+		{if}
+			1 (S.L.display1_visible)
+			0 (S.L.display2_visible) (S.L.display3_visible) (S.L.display4_visible)
+		{else}
+	(L.L.number_of_display) 2 =
+		{if}
+			1 (S.L.display2_visible)
+			0 (S.L.display1_visible) (S.L.display3_visible) (S.L.display4_visible)
+		{else}
+	(L.L.number_of_display) 3 =
+		{if}
+			1 (S.L.display3_visible)
+			0 (S.L.display1_visible) (S.L.display2_visible) (S.L.display4_visible)
+		{else}
+	(L.L.number_of_display) 4 =
+		{if}
+			1 (S.L.display4_visible)
+			0 (S.L.display1_visible) (S.L.display2_visible) (S.L.display3_visible) 
+		{else}
+		{endif}
+		{endif}
+		{endif}
+		{endif}
+
+
+'Measurements:
+
+	(L.L.number_of_display) 1 <=
+	(L.L.elec_busbar_main) &&
+		{if}
+			0 (S.L.display2_pressure)
+			0 (S.L.display2_temperature)
+			0 (S.L.display3_fuel)
+			0 (S.L.display4_brakepressure)
+			0 (S.L.display4_brakepressuretank)
+		{endif}
+
+	(L.L.number_of_display) 2 =
+	(L.L.elec_busbar_main) &&
+		{if}
+			1 (S.L.display2_pressure)
+			1 (S.L.display2_temperature)
+			0 (S.L.display3_fuel)
+			0 (S.L.display4_brakepressure)
+			0 (S.L.display4_brakepressuretank)
+		{endif}
+
+	(L.L.number_of_display) 3 =
+	(L.L.elec_busbar_main) &&
+		{if}
+			1 (S.L.display3_fuel)
+			0 (S.L.display2_pressure)
+			0 (S.L.display2_temperature)
+			0 (S.L.display4_brakepressure)
+			0 (S.L.display4_brakepressuretank)
+		{endif}
+
+	(L.L.number_of_display) 4 =
+	(L.L.elec_busbar_main) &&
+		{if}
+			1 (S.L.display4_brakepressure)
+			1 (S.L.display4_brakepressuretank)
+			0 (S.L.display2_pressure)
+			0 (S.L.display2_temperature)
+			0 (S.L.display3_fuel)
+		{endif}
+				
+'Make screens invisible if busbar off:
+
+	(L.L.elec_busbar_main) !
+		{if}
+			0 (S.L.display1_visible) (S.L.display2_visible) (S.L.display3_visible) (S.L.display4_visible)
+		{endif}
+
+	(L.L.Velocity) $IntToStr (S.$.vdo_panel_speed)
+	(L.L.engine_n) $IntToStr (S.$.text_rpm)
+	(L.L.antrieb_getr_aktugang) $IntToStr (S.$.text_gear)
+{end}
+
+'button click sound
+{macro:kippschaltersound}
+	l0
+	{if}
+		(T.L.ev_kippschalter_ein)
+	{else}
+		(T.L.ev_kippschalter_aus)
+	{endif}	
+{end}

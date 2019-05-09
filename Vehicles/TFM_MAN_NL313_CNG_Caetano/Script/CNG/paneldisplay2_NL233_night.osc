@@ -1,0 +1,446 @@
+{macro:disp2}
+(L.L.engine_n) (F.L.display2_oeldruck_curve) s0
+(L.L.engine_temperature) (F.L.display2_temp_main_curve) s1
+
+'OIL PRESSURE MEASUREMENT
+
+	l0 0 >= l0 1 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+		"OOOOOOOOOOOOOOOOOOOO" (S.$.screen2_pressure)
+
+		{endif}
+
+	l0 1 > l0 2 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+			(L.L.lights_stand) 
+			{if}
+				"NOOOOOOOOOOOOOOOOOOO" (S.$.screen2_pressure)
+			{else}
+				"IOOOOOOOOOOOOOOOOOOO" (S.$.screen2_pressure)
+			{endif}
+		{endif}
+
+	l0 2 > l0 3 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+			(L.L.lights_stand) 
+			{if}
+				"NNOOOOOOOOOOOOOOOOOO" (S.$.screen2_pressure)
+			{else}
+				"IIOOOOOOOOOOOOOOOOOO" (S.$.screen2_pressure)
+			{endif}
+
+		{endif}
+
+	l0 3 > l0 4 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+			(L.L.lights_stand) 
+			{if}
+				"NNNOOOOOOOOOOOOOOOOO" (S.$.screen2_pressure)
+			{else}
+				"IIIOOOOOOOOOOOOOOOOO" (S.$.screen2_pressure)
+			{endif}
+
+		{endif}
+
+
+	l0 4 > l0 5 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+			(L.L.lights_stand) 
+			{if}
+				"NNNNOOOOOOOOOOOOOOOO" (S.$.screen2_pressure)
+			{else}
+				"IIIIOOOOOOOOOOOOOOOO" (S.$.screen2_pressure)
+			{endif}
+
+		{endif}
+
+	l0 5 > l0 6 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+			(L.L.lights_stand) 
+			{if}
+				"NNNNNOOOOOOOOOOOOOOO" (S.$.screen2_pressure)
+			{else}
+				"IIIIIOOOOOOOOOOOOOOO" (S.$.screen2_pressure)
+			{endif}
+
+		{endif}
+
+	l0 6 > l0 7 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+			(L.L.lights_stand) 
+			{if}
+				"NNNNNNOOOOOOOOOOOOOO" (S.$.screen2_pressure)
+			{else}
+				"IIIIIIOOOOOOOOOOOOOO" (S.$.screen2_pressure)
+			{endif}
+
+		{endif}
+
+	l0 7 > l0 8 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+			(L.L.lights_stand) 
+			{if}
+				"NNNNNNNOOOOOOOOOOOOO" (S.$.screen2_pressure)
+			{else}
+				"IIIIIIIOOOOOOOOOOOOO" (S.$.screen2_pressure)
+			{endif}
+
+		{endif}
+
+	l0 8 > l0 9 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+			(L.L.lights_stand) 
+			{if}
+				"NNNNNNNOOOOOOOOOOOOO" (S.$.screen2_pressure)
+			{else}
+				"IIIIIIIOOOOOOOOOOOOO" (S.$.screen2_pressure)
+			{endif}
+
+		{endif}
+
+	l0 9 > l0 10 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+			(L.L.lights_stand) 
+			{if}
+				"NNNNNNNNNOOOOOOOOOOO" (S.$.screen2_pressure)
+			{else}
+				"IIIIIIIIIOOOOOOOOOOO" (S.$.screen2_pressure)
+			{endif}
+
+		{endif}
+
+	l0 10 > l0 11 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+			(L.L.lights_stand) 
+			{if}
+				"NNNNNNNNNNOOOOOOOOOO" (S.$.screen2_pressure)
+			{else}
+				"IIIIIIIIIIOOOOOOOOOO" (S.$.screen2_pressure)
+			{endif}
+
+		{endif}
+
+	l0 11 > l0 12 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+			(L.L.lights_stand) 
+			{if}
+				"NNNNNNNNNNNOOOOOOOOO" (S.$.screen2_pressure)
+			{else}
+				"IIIIIIIIIIIOOOOOOOOO" (S.$.screen2_pressure)
+			{endif}
+
+		{endif}
+
+	l0 12 > l0 13 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+			(L.L.lights_stand) 
+			{if}
+				"NNNNNNNNNNNNOOOOOOOO" (S.$.screen2_pressure)
+			{else}
+				"IIIIIIIIIIIIOOOOOOOO" (S.$.screen2_pressure)
+			{endif}
+
+		{endif}
+
+	l0 13 > l0 14 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+			(L.L.lights_stand) 
+			{if}
+				"NNNNNNNNNNNNNOOOOOOO" (S.$.screen2_pressure)
+			{else}
+				"IIIIIIIIIIIIIOOOOOOO" (S.$.screen2_pressure)
+			{endif}
+
+		{endif}
+
+	l0 14 > l0 15 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+			(L.L.lights_stand) 
+			{if}
+				"NNNNNNNNNNNNNNOOOOOO" (S.$.screen2_pressure)
+			{else}
+				"IIIIIIIIIIIIIIOOOOOO" (S.$.screen2_pressure)
+			{endif}
+
+		{endif}
+
+	l0 15 > l0 16 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+			(L.L.lights_stand) 
+			{if}
+				"NNNNNNNNNNNNNNNOOOOO" (S.$.screen2_pressure)
+			{else}
+				"IIIIIIIIIIIIIIIOOOOO" (S.$.screen2_pressure)
+			{endif}
+
+		{endif}
+
+	l0 16 > l0 17 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+			(L.L.lights_stand) 
+			{if}
+				"NNNNNNNNNNNNNNNNOOOO" (S.$.screen2_pressure)
+			{else}
+				"IIIIIIIIIIIIIIIIOOOO" (S.$.screen2_pressure)
+			{endif}
+
+		{endif}
+
+	l0 17 > l0 18 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+			(L.L.lights_stand) 
+			{if}
+				"NNNNNNNNNNNNNNNNNOOO" (S.$.screen2_pressure)
+			{else}
+				"IIIIIIIIIIIIIIIIIOOO" (S.$.screen2_pressure)
+			{endif}
+
+		{endif}
+
+	l0 18 > l0 19 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+			(L.L.lights_stand) 
+			{if}
+				"NNNNNNNNNNNNNNNNNNOO" (S.$.screen2_pressure)
+			{else}
+				"IIIIIIIIIIIIIIIIIIOO" (S.$.screen2_pressure)
+			{endif}
+
+		{endif}
+
+	l0 19 > l0 20 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+			(L.L.lights_stand) 
+			{if}
+				"NNNNNNNNNNNNNNNNNNNO" (S.$.screen2_pressure)
+			{else}
+				"IIIIIIIIIIIIIIIIIIIO" (S.$.screen2_pressure)
+			{endif}
+
+		{endif}
+
+	l0 20 >=
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+			(L.L.lights_stand) 
+			{if}
+				"NNNNNNNNNNNNNNNNNNNN" (S.$.screen2_pressure)
+			{else}
+				"IIIIIIIIIIIIIIIIIIII" (S.$.screen2_pressure)
+			{endif}
+
+		{endif}
+
+' ENGINE TEMPERATURE MEASUREMENT
+
+	l1 0 >= l1 1 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+		"OOOOOOOOOOOOOOOOOOOO" (S.$.screen2_temperature)
+
+		{endif}
+
+	l1 1 > l1 2 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+		"IOOOOOOOOOOOOOOOOOOO" (S.$.screen2_temperature)
+
+		{endif}
+
+	l1 2 > l1 3 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+		"IIOOOOOOOOOOOOOOOOOO" (S.$.screen2_temperature)
+
+		{endif}
+
+	l1 3 > l1 4 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+		"IIIOOOOOOOOOOOOOOOOO" (S.$.screen2_temperature)
+
+		{endif}
+
+
+	l1 4 > l1 5 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+		"IIIIOOOOOOOOOOOOOOOO" (S.$.screen2_temperature)
+
+		{endif}
+
+	l1 5 > l1 6 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+		"IIIIIOOOOOOOOOOOOOOO" (S.$.screen2_temperature)
+
+		{endif}
+
+	l1 6 > l1 7 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+		"IIIIIIOOOOOOOOOOOOOO" (S.$.screen2_temperature)
+
+		{endif}
+
+	l1 7 > l1 8 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+		"IIIIIIIOOOOOOOOOOOOO" (S.$.screen2_temperature)
+
+		{endif}
+
+	l1 8 > l1 9 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+		"IIIIIIIIOOOOOOOOOOOO" (S.$.screen2_temperature)
+
+		{endif}
+
+	l1 9 > l1 10 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+		"IIIIIIIIIOOOOOOOOOOO" (S.$.screen2_temperature)
+
+		{endif}
+
+	l1 10 > l1 11 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+		"IIIIIIIIIIOOOOOOOOOO" (S.$.screen2_temperature)
+
+		{endif}
+
+	l1 11 > l1 12 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+		"IIIIIIIIIIIOOOOOOOOO" (S.$.screen2_temperature)
+
+		{endif}
+
+	l1 12 > l1 13 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+		"IIIIIIIIIIIIOOOOOOOO" (S.$.screen2_temperature)
+
+		{endif}
+
+	l1 13 > l1 14 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+		"IIIIIIIIIIIIIOOOOOOO" (S.$.screen2_temperature)
+
+		{endif}
+
+	l1 14 > l1 15 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+		"IIIIIIIIIIIIIIOOOOOO" (S.$.screen2_temperature)
+
+		{endif}
+
+	l1 15 > l1 16 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+		"IIIIIIIIIIIIIIIOOOOO" (S.$.screen2_temperature)
+
+		{endif}
+
+	l1 16 > l1 17 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+		"IIIIIIIIIIIIIIIIOOOO" (S.$.screen2_temperature)
+
+		{endif}
+
+	l1 17 > l1 18 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+		"IIIIIIIIIIIIIIIIIOOO" (S.$.screen2_temperature)
+
+		{endif}
+
+	l1 18 > l1 19 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+		"IIIIIIIIIIIIIIIIIIOO" (S.$.screen2_temperature)
+
+		{endif}
+
+	l1 19 > l1 20 < &&
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+		"IIIIIIIIIIIIIIIIIIIO" (S.$.screen2_temperature)
+
+		{endif}
+
+	l1 20 >=
+	(L.L.elec_busbar_main) &&
+	(L.L.number_of_display) 2 = &&
+		{if}
+		"IIIIIIIIIIIIIIIIIIII" (S.$.screen2_temperature)
+
+		{endif}
+
+{end}

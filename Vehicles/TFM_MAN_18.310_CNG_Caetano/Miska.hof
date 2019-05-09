@@ -1,0 +1,246 @@
+#####TEMPLATE FILE#####
+SD200_SD202_Template.xml
+
+#####COMMENT#####
+
+#####ENDCOMMENT#####
+
+
+>>> Created: 27/4/2019, 15:31:15
+
+>>> This file was created with HOF Creator 1.1. Thank you for usage!
+>>> www.jan-kiesewalter.de
+
+
+[name]
+Miska
+
+[servicetrip]
+Not In Service
+
+
+stringcount_terminus
+6
+
+stringcount_busstop
+4
+
+
+
+######################################
+ TERMINI
+######################################
+
+
+[addterminus_allexit]
+1
+Not In Service
+NOT IN SERVICE
+SORRY
+NOT IN SERVICE
+NOT IN SERVICE
+
+Not in service
+.........................
+
+
+[addterminus_allexit]
+2
+Training Bus
+TRAINING BUS
+TRAINING BUS
+
+TRAINING BUS
+
+Training Bus
+.........................
+
+
+[addterminus]
+101
+Miska Town
+MISKA TOWN
+MISKA TOWN
+
+MISKA TOWN
+
+Miska Town
+.........................
+
+
+[addterminus]
+102
+Miska Crescent
+MISKA CRESCENT
+MISKA
+CRESCENT
+MISKA CRESCENT
+
+Miska Crescent
+.........................
+
+
+
+
+
+
+######################################
+ BUS STOPS
+######################################
+
+
+[addbusstop]
+Miska Town Terminus
+MISKA TOWN
+Miska Town
+
+Miska Town
+.........................
+
+
+[addbusstop]
+Miska Town
+MISKA TOWN
+Miska Town
+
+Miska Town
+.........................
+
+
+[addbusstop]
+Crimson
+CRIMSON
+Crimson
+
+Crimson
+.........................
+
+
+[addbusstop]
+Albert
+ALBERT
+Albert
+
+Albert
+.........................
+
+
+[addbusstop]
+Calvin
+CALVIN
+Calvin
+
+Calvin
+.........................
+
+
+[addbusstop]
+Stevens
+STEVENS
+Stevens
+
+Stevens
+.........................
+
+
+[addbusstop]
+Long John
+LONG JOHN
+Long John
+
+Long John
+.........................
+
+
+[addbusstop]
+Orchard
+ORCHARD
+Orchard
+
+Orchard
+.........................
+
+
+[addbusstop]
+Miska Mall
+MISKA MALL
+Miska Mall
+
+Miska Mall
+.........................
+
+
+[addbusstop]
+Miska Village
+MISKA VILLAGE
+Miska Village
+
+Miska Village
+.........................
+
+
+[addbusstop]
+Miska Crescent
+MISKA CRESCENT
+Miska Crescent
+
+Miska Crescent
+.........................
+
+
+
+
+
+
+######################################
+ TRIPS / ROUTES
+######################################
+
+
+Line 002, Route 01: Miska Town Terminus  >>  Miska Crescent
+----------------------------------------------------------------------
+
+[infosystem_trip]
+00201
+MISKA TOWN TERMINUS  >>  MISKA CRESCENT
+102
+XXX
+
+[infosystem_busstop_list]
+11
+Miska Town Terminus
+Miska Town
+Crimson
+Albert
+Calvin
+Stevens
+Long John
+Orchard
+Miska Mall
+Miska Village
+Miska Crescent
+
+
+Line 002, Route 02: Miska Crescent  >>  Miska Town Terminus
+----------------------------------------------------------------------
+
+[infosystem_trip]
+00202
+MISKA CRESCENT  >>  MISKA TOWN TERMINUS
+101
+XXX
+
+[infosystem_busstop_list]
+10
+Miska Crescent
+Miska Village
+Miska Mall
+Orchard
+Long John
+Stevens
+Calvin
+Albert
+Crimson
+Miska Town Terminus
+
+

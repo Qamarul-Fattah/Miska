@@ -1,0 +1,74 @@
+'##############
+'Ticketprinter-Script
+'##############
+
+'Simulates ticket printer
+
+'(c) 12.01.2010 Rüdiger Hülsmann
+'2017.03.06 pedropt10 - adapted for proper ticket operation 
+
+
+'----------------------
+'	Trigger
+'----------------------
+
+
+{trigger:ticketprinter_button_ticket_0}
+	
+	0 (S.L.ticketprinter_ticket_selection)
+	
+	(L.L.ticketprinter_ticket_selection) (S.L.GivenTicket)
+	1 (S.L.ticketprinter_ticket_visible)
+	(T.L.ev_ticketsale_giveticket)
+
+{end}
+
+{trigger:ticketprinter_button_ticket_1}
+	
+	1 (S.L.ticketprinter_ticket_selection)
+
+	(L.L.ticketprinter_ticket_selection) (S.L.GivenTicket)
+
+	1 (S.L.ticketprinter_ticket_visible)
+	(T.L.ev_ticketsale_giveticket)
+{end}
+
+'{trigger:ticketprinter_getticket}
+'	0 (S.L.ticketprinter_ticket_pos)
+'	-1 (S.L.ticketprinter_ticket_selection) (S.L.GivenTicket)
+'	(T.L.ev_ticketsale_giveticket)
+'{end}
+
+'----------------------
+'	Init
+'----------------------
+
+{macro:ticketprinter_init}
+	-1 (S.L.ticketprinter_ticket_selection)
+{end}
+
+
+{macro:ticketprinter_frame}
+
+'Ausgeben des Fahrscheins
+
+	(L.L.ticketprinter_druckt)
+	{if}
+		1 (S.L.ticketprinter_ticket_pos)
+		0 (S.L.ticketprinter_druckt)
+		(L.L.ticketprinter_ticket_selection) (S.L.GivenTicket)
+	{endif}
+
+	(L.L.ticketprinter_ticket_visible)
+	(L.L.ticketprinter_druckt) ! &&
+	(L.L.GivenTicket) 0 < &&
+	{if}
+		0 (S.L.ticketprinter_ticket_pos)
+		-1 (S.L.ticketprinter_ticket_selection) 
+		(T.L.ev_ticketsale_giveticket)
+	{endif}
+
+	(L.L.ticketprinter_druckt) (L.L.GivenTicket) 0 >= || (S.L.ticketprinter_ticket_visible)
+{end}
+
+

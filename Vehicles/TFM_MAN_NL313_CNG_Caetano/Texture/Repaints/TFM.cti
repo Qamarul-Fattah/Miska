@@ -1,0 +1,47 @@
+***************************************
+Transport for Miska
+***************************************
+
+[item]
+Transport for Miska
+farbschema_tex1
+313_TFM.png
+
+[item]
+Transport for Miska
+farbschema_tex2
+int_Resende.png
+
+[item]
+Transport for Miska
+farbschema_tex4
+alpha_Basic.tga
+
+[item]
+Transport for Miska
+farbschema_tex5
+NL233_Tecmic_EN.png
+
+[setvar]
+gear_button_type
+1
+
+[setvar]
+visible_pub
+0
+
+[setvar]
+visible_pub_ext
+0
+
+[setvar]
+Tecmic_language
+2
+
+[setvar]
+visible_stamps
+0
+
+[setvar]
+fleet_number_color
+6

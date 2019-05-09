@@ -1,0 +1,962 @@
+'##############
+'IBIS Script
+'##############
+
+'80s style IBIS (Integrated Board Information System)
+
+'(c) 15.04.2009 Rüdiger Hülsmann
+'(c) 17.09.2013 Marcel Kuhnt
+'(c) 22.06.2011 Markus Rabe
+'2017.03.29	pedropt10	Adapted for Tecmic
+
+'Script Version: 1.1
+'Omsi release: 1.0
+
+'Needs:
+'- Cockpit (Batterietrennschalter)
+'- Door (Haltestellenbremse)
+
+'--------------------------------------------------------------------------------
+
+'IBIS-Modi:
+
+'	0:	Normal/Haltestellenanzeige
+'	1:	Linie/Kurs-Eingabe
+'	2:	Routen-Eingabe
+'	3:	Ziel-Eingabe
+'	4:	Error "Falsche Route"
+'	5:	Debug: show Terminus-Matrix
+'	6:	Error "Falsches Ziel"
+'	7:	Debug: show Line-Matrix
+'	8:	Ziel im IBIS anzeigen
+'	9:	Datum und Uhrzeit		NOT NECESSARY
+
+
+'----------------------
+'	Trigger
+'----------------------
+
+{trigger:IBIS_setmode_linie_kurs}
+
+	(L.L.elec_busbar_main)
+	{if}
+		0 (S.L.IBIS_input) (S.L.IBIS_input_count)
+		0 (S.L.IBIS_modetimer)
+		1 (S.L.IBIS_mode)
+	{endif}
+	
+{end}
+
+{trigger:IBIS_setmode_route}
+
+	(L.L.elec_busbar_main)
+	{if}
+		0 (S.L.IBIS_input) (S.L.IBIS_input_count)
+		0 (S.L.IBIS_modetimer)
+		2 (S.L.IBIS_mode)
+	{endif}
+	
+{end}
+
+{trigger:IBIS_setmode_ziel}
+
+	(L.L.elec_busbar_main)
+	{if}
+		0 (S.L.IBIS_input) (S.L.IBIS_input_count)
+		0 (S.L.IBIS_modetimer)
+		3 (S.L.IBIS_mode)
+	{endif}
+	
+{end}
+
+{trigger:IBIS_eingabe}
+
+	(L.L.elec_busbar_main)
+	{if}
+'***********************
+' Eingabe Linie/Kurs:
+'***********************
+		(L.L.IBIS_mode) 1 =
+		{if}
+
+			0 (S.L.IBIS_mode)
+
+' Input teilen...
+			(L.L.IBIS_input) s0 (S.L.IBIS_Linie_Complex)
+			l0 0 =
+			{if}
+				(M.L.IBIS-2_reset)
+			{endif}
+
+			l0 100 / trunc
+
+			(S.L.IBIS_LinieKurs)
+
+			l0 100 %
+
+			(S.L.IBIS_Linie_Suffix)
+
+' Entwerter umstellen:
+			(M.L.IBIS_SetComplexLineString)
+
+		{else}
+'***********************
+' Eingabe Route:
+'***********************
+		(L.L.IBIS_mode) 2 =
+		{if}
+			(L.L.IBIS_input) s0 (S.L.IBIS_Route)
+			0 =
+			{if}
+				-1 (S.L.IBIS_RouteIndex)
+				0 (S.L.IBIS_Route)
+				0 (S.L.IBIS_busstop_index)
+				"" (S.$.IBIS_cabindisplay)
+				0 (S.L.IBIS_busstop)
+				"" (S.$.act_busstop)
+				"" (S.$.IBIS)
+				"" (S.$.IBIS_busstop_name)
+				0 (S.L.IBIS_mode)
+				"" (S.$.Haltestelle)
+
+				"" (S.$.Tecmic_Paragem)
+
+
+
+			{else}
+' Das Folgende soll künftig erst nach "Route" gemacht werden!
+				(L.L.IBIS_LinieKurs) 100 * l0 + (M.V.GetRouteIndex) s1
+				0 <
+				{if}
+' Falls kleiner 0, also -1, dann fehlerhaft, dann nicht übernehmen sondern Fehlermeldung ausgeben:
+					4 (S.L.IBIS_mode)
+'		Blinker aktivieren:
+					1 (S.L.IBIS_BlinkOn) (S.L.IBIS_BlinkInitial)
+					(L.S.GetTime) (S.L.IBIS_BlinkTimer)
+				{else}
+					(M.L.IBIS_SetRoute)
+' Bushaltestellen zurücksetzen:
+					0 (S.L.IBIS_busstop)			
+					(M.L.IBIS_RefreshBusstop)
+'ANNAX-Test:
+'					7 (S.L.IBIS_mode)
+					0 (S.L.IBIS_modetimer)
+					8 (S.L.IBIS_mode)
+
+' Entwerter umstellen:
+					(L.L.IBIS_busstop_entwerter_soll) (S.L.IBIS_busstop_entwerter_ist)
+					(M.L.Fahrscheindrucker-Haltestelle)
+				{endif}
+			{endif}
+		{else}
+'***********************
+' Eingabe Ziel:
+'***********************
+		(L.L.IBIS_mode) 3 =
+		{if}
+
+
+' Eingabe ist der Terminus-Code
+			(L.L.IBIS_input) (S.L.IBIS_TerminusCode)
+' Daraus wird noch der Terminus-Index generiert:
+			(M.V.GetTerminusIndex) s0
+			0 <
+			{if}
+' Falls kleiner 0, also -1, dann fehlerhaft, dann nicht übernehmen sondern Fehlermeldung ausgeben:
+				6 (S.L.IBIS_mode)
+'		Blinker aktivieren:
+				1 (S.L.IBIS_BlinkOn) (S.L.IBIS_BlinkInitial)
+				(L.S.GetTime) (S.L.IBIS_BlinkTimer)
+'		Fehler-piepen
+			{else}
+				0 (S.L.IBIS_modetimer)
+				8 (S.L.IBIS_mode)
+				l0 (S.L.IBIS_TerminusIndex)
+				(M.L.IBIS_RefreshTerminusText)
+'ANNAX-Test:
+				5 (S.L.IBIS_mode)
+			{endif}
+		{else}
+'***********************
+' Eingabe Fehler/Debug:
+'***********************
+		(L.L.IBIS_mode) 4 =
+		(L.L.IBIS_mode) 5 = ||
+		(L.L.IBIS_mode) 6 = ||
+		(L.L.IBIS_mode) 7 = ||
+		{if}
+			0 (S.L.IBIS_mode)
+		{endif}
+		{endif}
+		{endif}
+		{endif}
+	{endif}
+	
+{end}
+
+{trigger:IBIS_1}
+	1 (M.L.IBIS_Zahlentasten)
+{end}
+
+
+{trigger:IBIS_2}
+	2 (M.L.IBIS_Zahlentasten)
+{end}
+
+{trigger:IBIS_3}
+	3 (M.L.IBIS_Zahlentasten)
+{end}
+
+{trigger:IBIS_4}
+	4 (M.L.IBIS_Zahlentasten)
+{end}
+
+{trigger:IBIS_5}
+	5 (M.L.IBIS_Zahlentasten)
+{end}
+
+{trigger:IBIS_6}
+	6 (M.L.IBIS_Zahlentasten)
+{end}
+
+{trigger:IBIS_7}
+	7 (M.L.IBIS_Zahlentasten)
+{end}
+
+{trigger:IBIS_8}
+	8 (M.L.IBIS_Zahlentasten)
+{end}
+
+{trigger:IBIS_9}
+	9 (M.L.IBIS_Zahlentasten)
+{end}
+
+{trigger:IBIS_0}
+	0 (M.L.IBIS_Zahlentasten)
+{end}
+
+{trigger:IBIS_loeschen}
+	
+	(L.L.elec_busbar_main)
+	{if}
+		0 (S.L.IBIS_mode)
+	{endif}
+{end}
+
+{trigger:IBIS_vor}
+	(L.L.elec_busbar_main) (L.L.IBIS_mode) s0 0 = l0 8 = || &&
+	{if}
+		(L.L.IBIS_busstop) 1 + (S.L.IBIS_busstop)
+		(M.L.IBIS_RefreshBusstop)
+		(M.L.IBIS_PlayAnnouncement)
+
+'		Nullsetzen des Timers für den Zeilenwechsel der LCD-Innenanzeige
+		0 (S.L.IBIS_LCD-zeilentimer) (S.L.IBIS_LCD-zeile)
+		(M.L.IBIS_LCD-refresh)
+
+		1 (S.L.Tecmic_DisplayStopVar)
+	{endif}
+{end}
+
+{trigger:IBIS_vor_stumm}
+	(L.L.elec_busbar_main) (L.L.IBIS_mode) s0 0 = l0 8 = || &&
+	{if}
+		(L.L.IBIS_busstop) 1 + (S.L.IBIS_busstop)
+		(M.L.IBIS_RefreshBusstop)
+
+'		Nullsetzen des Timers für den Zeilenwechsel der LCD-Innenanzeige
+		0 (S.L.IBIS_LCD-zeilentimer) (S.L.IBIS_LCD-zeile)
+		(M.L.IBIS_LCD-refresh)
+
+		1 (S.L.Tecmic_DisplayStopVar)
+	{endif}
+{end}
+
+{trigger:IBIS_rueck}
+	(L.L.elec_busbar_main) (L.L.IBIS_mode) s0 0 = l0 8 = || &&
+	{if}
+		(L.L.IBIS_busstop) 0 > &&
+		{if}
+			(L.L.IBIS_busstop) 1 - (S.L.IBIS_busstop)
+			(M.L.IBIS_RefreshBusstop)
+
+'			Nullsetzen des Timers für den Zeilenwechsel der LCD-Innenanzeige
+			0 (S.L.IBIS_LCD-zeilentimer) (S.L.IBIS_LCD-zeile)
+			(M.L.IBIS_LCD-refresh)
+
+			1 (S.L.Tecmic_DisplayStopVar)
+		{endif}
+
+	{endif}
+{end}
+
+'----------------------
+'	Init
+'----------------------
+
+{macro:IBIS_init}
+	"     " (S.$.IBIS_Complex_Line)
+	-1 (S.L.IBIS_RouteIndex)
+
+	0 (S.L.Tecmic_StopIndex)
+	0 (S.L.Tecmic_StopIndexComp)
+	0 (S.L.Tecmic_DisplayMoveProx)
+	0 (S.L.Tecmic_DisplayMoveNome)
+	0 (S.L.Tecmic_DisplayStopVar)
+
+{end}
+
+
+'----------------------
+'	Frame
+'----------------------
+
+{macro:IBIS_frame}
+	
+	(M.L.Tecmic_AutoStopAdvance)
+
+	(L.L.elec_busbar_main)
+	{if}
+
+
+'----------------
+'Blinker laufen lassen:
+
+		(L.L.IBIS_BlinkTimer) s0 0 <
+		{if}
+			(L.S.GetTime) (S.L.IBIS_BlinkTimer) s0
+		{endif}
+
+' Wenn Zeit abgelaufen:
+		(L.S.GetTime) l0 - s0
+		1.2 > (L.L.IBIS_BlinkInitial) && l0 0.833 > ||
+		{if}
+			(L.L.IBIS_BlinkOn) ! (S.L.IBIS_BlinkOn)
+			0 (S.L.IBIS_BlinkInitial)
+			(L.S.GetTime) (S.L.IBIS_BlinkTimer)
+		{endif}
+
+' Zurückschalten in den Normalmodus (IBIS_mode 0) nach 10 sec
+		(L.L.IBIS_mode) 0 = !
+		{if}
+			(L.L.IBIS_modetimer) (L.S.Timegap) + (S.L.IBIS_modetimer)
+			(L.L.IBIS_modetimer) 10 >=
+			{if}
+				0 (S.L.IBIS_mode)
+			{endif}
+		{endif}
+
+'----------------
+'TECMIC: dispensável
+'Entwerter-Weiterschaltung:
+		(L.L.IBIS_busstop_entwerter_ist) (L.L.IBIS_busstop_entwerter_soll) = ! (L.L.bremse_halte) &&
+		{if}
+			(L.L.IBIS_busstop_entwerter_soll) (S.L.IBIS_busstop_entwerter_ist)
+			(T.L.ev_IBIS_entwerter_weiter)
+		{endif}
+
+'----------------
+'TECMIC: dispensável
+'Haltestellenanzeige im Fahrscheindrucker aktualisieren:
+		(L.L.IBIS_busstop_index) 0 (M.V.GetBusstopString) (L.$.Haltestelle) $= ! (L.L.bremse_halte) &&
+		{if}
+			(M.L.Fahrscheindrucker-Haltestelle)
+		{endif}
+
+'----------------
+'TECMIC: Display-Darstellung:
+
+
+'TECMIC: Data/hora se ligado
+'TECMIC: formato "13/11/84 01:21"
+
+'	Tag:
+		(L.S.Day) "02" $IntToStrEnh "/" $+
+'	Monat:
+		(L.S.Month) "02" $IntToStrEnh $+ "/" $+
+'	Jahr:
+		(L.S.Year) $IntToStr 4 $SetLengthR $+ " " $+
+'	Stunden:
+		(L.S.Time) 3600 / s0 trunc s1 "02" $IntToStrEnh $+ ":" $+
+'	Minuten:
+		l0 l1 - 60 * trunc "02" $IntToStrEnh $+
+
+		16 $SetLengthL 
+		(S.$.Tecmic_DataHora)
+
+'TECMIC: EM VIAGEM NORMAL, se rota e linha validos
+
+		(L.L.IBIS_Route) 0 =
+		{if}
+			"SAEI LIGADO _G                          " (S.$.Tecmic_L1)
+		{else}
+			"SAEI LIGADO _G          EM VIAGEM NORMAL" (S.$.Tecmic_L1)
+		{endif}
+
+
+'TECMIC: Ida ou Volta
+		(L.L.IBIS_Route) 0 =
+		{if}
+			""
+			"L:    R:        D:   " (S.$.Tecmic_L4)
+		{else}
+			""
+			"L:    R:  " $+
+			(L.L.IBIS_Route) 2 % 0.5 >
+			{if}
+				"IDA   " $+
+			{else}
+				"VOLTA " $+
+			{endif}
+
+			"D:   " $+
+			(S.$.Tecmic_L4)
+		{endif}
+
+'TECMIC: Linha/Rota/Destino
+
+		(L.L.IBIS_LinieKurs) 0 =
+		{if}
+			" " (S.$.Tecmic_Linha)
+		{else}
+			(L.$.IBIS_Complex_Line) (S.$.Tecmic_Linha)
+		{endif}
+
+		(L.L.IBIS_Route) 0 =
+		{if}
+			" " (S.$.Tecmic_Rota)
+		{else}
+			(L.L.IBIS_Route) $IntToStr (S.$.Tecmic_Rota)
+		{endif}
+
+		(L.L.IBIS_TerminusCode) 0 =
+		{if}
+			" " (S.$.Tecmic_Destino)
+		{else}
+			(L.L.IBIS_TerminusCode) $IntToStr (S.$.Tecmic_Destino)
+		{endif}
+		
+'TECMIC: linha
+		(L.L.IBIS_mode) 1 =
+		{if}
+			"Introduzir linha:" 
+
+			(L.L.IBIS_input_count) 0 =
+			{if}
+				(L.$.IBIS_Complex_Line) $+
+			{else}
+				" " 5 (L.L.IBIS_input_count) - $* $+ (L.L.IBIS_input) "0" (L.L.IBIS_input_count) $IntToStr $+ $IntToStrEnh $+ 
+			{endif}
+			" " $+
+			(S.$.Tecmic_Introduzir)
+
+		{else}
+
+'TECMIC: rota
+		(L.L.IBIS_mode) 2 =
+		{if}
+
+			"Introduzir rota:" " " 2 (L.L.IBIS_input_count) - $* $+ (L.L.IBIS_input) "0" (L.L.IBIS_input_count) $IntToStr $+ $IntToStrEnh $+ 
+			"     " $+
+			(S.$.Tecmic_Introduzir)
+
+		{else}
+
+'TECMIC: destino
+		(L.L.IBIS_mode) 3 =
+		{if}
+
+			"Introduzir destino:" " " 3 (L.L.IBIS_input_count) - $* $+ (L.L.IBIS_input) "0" (L.L.IBIS_input_count) $IntToStr $+ $IntToStrEnh $+ 
+			" " $+
+			(S.$.Tecmic_Introduzir)
+
+		{else}
+
+'TECMIC: erro rota/destino
+		(L.L.IBIS_mode) 4 =
+		{if}
+			(L.L.IBIS_BlinkOn)
+			{if}
+				"    ROTA INVALIDA    " (S.$.Tecmic_Introduzir)
+			{else}
+				"" (S.$.Tecmic_Introduzir)
+			{endif}
+		{else}
+		(L.L.IBIS_mode) 6 =
+		{if}
+			(L.L.IBIS_BlinkOn)
+			{if}
+				"   DESTINO INVALIDO  " (S.$.Tecmic_Introduzir)
+			{else}
+				"" (S.$.Tecmic_Introduzir)
+			{endif}
+		{else}
+
+
+'TECMIC: mostrar destino no campo da paragem 
+
+		(L.L.IBIS_mode) 8 =
+		{if}
+			(L.$.IBIS_terminus_name) 18 $SetLengthL
+			(S.$.Tecmic_Paragem)
+		{else}
+			(L.$.IBIS_busstop_name) 18 $SetLengthL
+			(S.$.Tecmic_Paragem)
+		{endif}
+		{endif}
+		{endif}
+		{endif}
+		{endif}
+		{endif}
+
+		(L.L.IBIS_mode) 0 =
+		(L.L.IBIS_mode) 6 > ||
+		{if}
+			"" (S.$.Tecmic_Introduzir)
+		{endif}
+		
+		(L.L.IBIS_Route) s2
+		(L.L.IBIS_TerminusCode) s3
+
+		""
+'Linie/Kurs:
+		(L.$.IBIS_Complex_Line) $+ " " $+
+'Route:
+		l2 0 !
+		{if}
+			(L.L.IBIS_Route) $IntToStr $+
+
+			l2 10 <
+			{if}
+				"         " $+
+			{else}
+				"        " $+
+			{endif}
+		{else}
+			"          " $+
+		{endif}
+'Terminus:
+
+		l3 0 !
+		{if}
+			(L.L.IBIS_TerminusCode) "03" $IntToStrEnh $+
+		{else}	
+			"   " $+
+		{endif}
+
+		(S.$.Tecmic_L4_Campos)
+		
+		""
+		"PROXIMA PARAGEM " (S.$.Tecmic_ProximaParagem)
+
+
+	{else}
+		"" (S.$.Tecmic_L1)
+		"" (S.$.Tecmic_L4)
+		"" (S.$.Tecmic_L4_Campos)
+		"" (S.$.Tecmic_Linha)
+		"" (S.$.Tecmic_Rota)
+		"" (S.$.Tecmic_Destino)
+		"" (S.$.Tecmic_Paragem)
+		"" (S.$.Tecmic_EstadoMin)
+		"" (S.$.Tecmic_Estado)
+		"" (S.$.Tecmic_DataHora)
+		"" (S.$.Tecmic_Introduzir)
+	{endif}
+
+
+
+
+'Anzeigen der aktuellen Fahrplanlage:
+	(L.L.elec_busbar_main)
+	{if}
+		""
+		(M.V.GetTTDelay) s1 60 / s0
+
+		(L.L.Tecmic_StopIndex) -1 =
+		{if}
+			"" (S.$.Tecmic_EstadoMin)
+		{else}
+
+'			Minuten:
+			l0 abs trunc " 2" $IntToStrEnh $+  
+			(S.$.Tecmic_EstadoMin)
+
+		{endif}
+
+		(L.L.Tecmic_StopIndex) -1 =
+		{if}
+			"" (S.$.Tecmic_Estado)
+		{else}
+			l1 abs 6 >=
+			{if}
+				l0 0 >
+				{if}
+					"ATRASO     minuto(s)" (S.$.Tecmic_Estado)
+				{else}
+					"AVANCO     minuto(s)" (S.$.Tecmic_Estado)
+				{endif}
+			{else}
+				(L.L.Tecmic_StopIndex) 0 >=
+				{if}
+					"ATRASO     minuto(s)" (S.$.Tecmic_Estado)
+				{endif}
+			{endif}
+		{endif}
+
+
+
+	{else}
+		"" (S.$.Tecmic_EstadoMin) 
+		"" (S.$.Tecmic_Estado)
+	{endif}
+
+
+
+'Omsi sagen, dass die Strings-Ausgaben aktualisiert werden sollen:
+	1 (S.L.Refresh_Strings)
+
+
+'----------------
+'Last energy:
+	(L.L.elec_busbar_main) (S.L.IBIS_energy_last)
+
+'----------------
+'LCD-Anzeigetimer hochlaufen lassen
+	(L.L.IBIS_LCD-zeilentimer) (L.S.Timegap) + (S.L.IBIS_LCD-zeilentimer)
+	4 >
+	(L.L.elec_busbar_main) &&
+	{if}
+		(L.L.IBIS_LCD-zeile) ! (S.L.IBIS_LCD-zeile)
+		0 (S.L.IBIS_LCD-zeilentimer)
+		(M.L.IBIS_LCD-refresh)
+	{endif}
+
+
+'Display script
+'new variable: Tecmic_DisplayStopVar
+'0 = nothing displayed (after leaving stop)
+'1 = next stop + next stop name 
+'2 = only next stop name
+
+	(L.L.Tecmic_DisplayStopVar) 0 =
+	{if}
+		1 (S.L.Tecmic_DisplayMoveProx)
+		1 (S.L.Tecmic_DisplayMoveNome)
+	{endif}
+
+	(L.L.Tecmic_DisplayStopVar) 1 =
+	{if}
+		0 (S.L.Tecmic_DisplayMoveProx)
+		0 (S.L.Tecmic_DisplayMoveNome)
+	{endif}
+
+	(L.L.Tecmic_DisplayStopVar) 2 =
+	{if}
+		1 (S.L.Tecmic_DisplayMoveProx)
+		0 (S.L.Tecmic_DisplayMoveNome)
+	{endif}
+
+
+'variable changing script. does not work for skipped stops
+
+'state 2: at bus stop
+
+	(L.L.Door_0) 0 >
+	(L.L.Door_3) 0 > ||
+	(L.L.Tecmic_DisplayStopVar) 1 = &&
+	(L.L.Tecmic_StopIndex) (L.L.Tecmic_StopIndexComp) = &&
+	{if}
+		2 (S.L.Tecmic_DisplayStopVar)
+	{else}
+
+'state 0: bus leaves bus stop, internal stop index has not yet changed
+
+		(L.L.Velocity) 5 >=
+		(L.L.Tecmic_DisplayStopVar) 2 = &&
+		(L.L.Tecmic_StopIndex) (L.L.Tecmic_StopIndexComp) = &&
+		{if}
+			0 (S.L.Tecmic_DisplayStopVar)
+		{else}
+
+'state 1: if internal stop changed, update comparative index and
+'switch to this state no matter what the previous state was
+
+			(L.L.Tecmic_StopIndex) (L.L.Tecmic_StopIndexComp) >
+			(L.L.Tecmic_StopIndex) (L.L.Tecmic_StopIndexComp) < ||
+			(L.L.Tecmic_StopIndex) 0 >= &&
+			{if}
+				1 (S.L.Tecmic_DisplayStopVar)
+				(L.L.Tecmic_StopIndex) (S.L.Tecmic_StopIndexComp)
+			{endif}
+			
+			(L.L.Tecmic_StopIndex) -1 =
+			{if}
+				0 (S.L.Tecmic_DisplayStopVar)
+			{endif}
+		{endif}
+	{endif}
+
+{end}
+
+'------------
+'Automatische Haltestellenfortschaltung - adapted from Kamaz Lions City
+'Automatic busstop advancing
+
+{macro:Tecmic_AutoStopAdvance}
+
+	(L.L.Tecmic_StopIndex) (M.V.GetTTBusstopIndex) <
+	(L.L.Tecmic_StopIndex) 1 - (M.V.GetTTBusstopIndex) > ||
+	{if}
+		(L.L.elec_busbar_main) (L.L.IBIS_mode) s0 0 = l0 8 = || &&
+		{if}
+			(L.L.IBIS_busstop) 1 + (S.L.IBIS_busstop)
+			(M.L.IBIS_RefreshBusstop)
+			(M.L.IBIS_PlayAnnouncement)
+'			Nullsetzen des Timers für den Zeilenwechsel der LCD-Innenanzeige
+			0 (S.L.IBIS_LCD-zeilentimer) (S.L.IBIS_LCD-zeile)
+			(M.L.IBIS_LCD-refresh)
+		{endif}
+
+		(M.V.GetTTBusstopIndex) (S.L.Tecmic_StopIndex)
+
+	{else}
+		(L.L.Tecmic_StopIndex) 1 - (M.V.GetTTBusstopIndex) =
+		{if}
+			(L.L.elec_busbar_main) (L.L.IBIS_mode) s0 0 = l0 8 = || &&
+			(L.L.IBIS_busstop) 0 > &&
+			{if}
+				(L.L.IBIS_busstop) 1 - (S.L.IBIS_busstop)
+				(M.L.IBIS_RefreshBusstop)
+'				Nullsetzen des Timers für den Zeilenwechsel der LCD-Innenanzeige
+				0 (S.L.IBIS_LCD-zeilentimer) (S.L.IBIS_LCD-zeile)
+				(M.L.IBIS_LCD-refresh)
+			{endif}
+		
+			(M.V.GetTTBusstopIndex) (S.L.Tecmic_StopIndex)
+		
+		{endif}
+	{endif}
+
+{end}
+
+'----------------------
+'	Macros
+'----------------------
+
+{macro:IBIS_RefreshBusstop}
+
+	(L.L.IBIS_RouteIndex) 0 <
+	{if}
+		"" (S.$.act_busstop)
+	{else}
+	(L.L.IBIS_RouteIndex) (M.V.GetBusstopCount) (L.L.IBIS_busstop) <=
+	{if}
+'Wenn der Bushaltestellenindex größer oder gleich der Anzahl ist und somit zu groß (der Bushaltestellenindex ist wie alle Indizes nullbasiert), 
+'dann wechsele automatisch auf die Gegenroute, sofern der Index 01 oder 02 ist und der jeweilige andere Index existiert. Sonst belasse die Route.
+		0 (S.L.IBIS_busstop)
+' Entwerter umstellen:
+
+		(L.L.IBIS_busstop_entwerter_soll) (S.L.IBIS_busstop_entwerter_ist)
+
+		(L.L.IBIS_Route) s5
+		1.5 <
+		{if}
+			2 s6
+		{else}
+			l5 2.5 <
+			{if}
+				1 s6
+			{endif}
+		{endif}
+
+'Suche den Routeindex:
+
+		(L.L.IBIS_LinieKurs) 100 * l6 + (M.V.GetRouteIndex) s1
+		0 >=
+		{if}
+'Wenn gültig, dann wechsele:
+			(M.L.IBIS_SetRoute)
+			l6 (S.L.IBIS_Route)
+			(M.L.Fahrscheindrucker-Haltestelle)
+		{endif}
+	{else}
+		0 (S.L.IBIS_mode)
+	{endif}
+	{endif}
+
+'Setzen der String-Variable "act_busstop" für die OMSI-interne Berechnung und daraus Ableitung des "globalen" Haltestellenindexes:
+
+	(L.L.IBIS_RouteIndex) (L.L.IBIS_busstop) (M.V.GetRouteBusstopIdent) (S.$.act_busstop) (S.$.Tecmic_Paragem)
+	(M.V.GetBusstopIndex) (S.L.IBIS_busstop_index)
+
+
+'Sonst zeige die Bushaltestelle	
+	(L.L.IBIS_busstop_index) 3 (M.V.GetBusstopString)
+	(S.$.IBIS_busstop_name)
+
+
+'Ausrechnen der neuen Entwerterposition:
+	(L.L.IBIS_busstop_offset) (L.L.IBIS_busstop) + (S.L.IBIS_busstop_entwerter_soll)
+
+
+{end}
+
+{macro:IBIS_PlayAnnouncement}
+
+	(L.L.IBIS_busstop) 0 >
+	{if}
+
+		"..\..\Announcements\" 0 (M.V.GetDepotStringGlobal) "\" $+ $+ (L.$.act_busstop) $+ $msg
+
+		(L.L.IBIS_RouteIndex) (M.V.GetBusstopCount) 1 - (L.L.IBIS_busstop) <=
+		{if}
+			"_#terminus" $+
+		{endif}
+
+		".wav" $+
+		(T.F.ev_IBIS_Ansagen)
+	{endif}
+{end}
+
+{macro:IBIS_LCD-refresh}
+
+'TECMIC: dispensável
+
+'Formatierung der D92-Innenanzeige
+
+	(L.L.IBIS_LCD-zeile) 1 = 
+	(L.L.IBIS_busstop_index) 2 (M.V.GetBusstopString) $length 0 > &&
+	{if}
+		(L.L.IBIS_RouteIndex) 0 >=
+		{if}
+			(L.L.IBIS_LCD-zeile) 
+			(L.L.IBIS_busstop_index) 2 (M.V.GetBusstopString)
+			(S.$.IBIS_cabindisplay)
+		{endif}
+	{else}
+		(L.L.IBIS_RouteIndex) 0 >=
+		{if}
+			(L.L.IBIS_LCD-zeile) 
+			(L.L.IBIS_busstop_index) 1 (M.V.GetBusstopString) 
+			(S.$.IBIS_cabindisplay)
+		{endif}
+	{endif}
+{end}
+
+
+
+{macro:IBIS_Zahlentasten}
+	s0
+	(L.L.elec_busbar_main)
+	{if}
+		(L.L.IBIS_mode) 1 = (L.L.IBIS_input_count) 5 < &&
+		(L.L.IBIS_mode) 2 = (L.L.IBIS_input_count) 2 < && ||
+		(L.L.IBIS_mode) 3 = (L.L.IBIS_input_count) 3 < && ||
+		{if}
+			(L.L.IBIS_input) 10 * l0 + (S.L.IBIS_input)
+			(L.L.IBIS_input_count) 1 + (S.L.IBIS_input_count)
+		{else}
+			l0 0 =
+			{if}
+				9 (S.L.IBIS_mode)
+			{endif}
+		{endif}
+		0 (S.L.IBIS_modetimer)
+	{endif}
+{end}
+
+{macro:IBIS_SetRoute}
+
+' Macro setzt den Routeindex auf den Wert von l1 und führt die nötigen Schritte aus
+
+' Wenn gültig, dann übernehmen:
+	l1 (S.L.IBIS_RouteIndex)
+' Finden des zugehörigen Ziel-Index':
+	(M.V.GetRouteTerminusIndex) (S.L.IBIS_TerminusIndex)
+' Finden des zugehörigen Ziel-Codes:
+	(M.V.GetTerminusCode) (S.L.IBIS_TerminusCode)
+' Aktualisieren des Zielschild-Textes:
+	(M.L.IBIS_RefreshTerminusText)
+' Ziel anzeigen:
+	0 (S.L.IBIS_modetimer)
+	8 (S.L.IBIS_mode)
+
+' Falls es entweder ein 500, ein 800 oder 900-Code ist, dann bitte beim Complex-Code eine 28 (M), eine 36 (X) bzw. 04 (N) verwenden:
+	(L.L.IBIS_LinieKurs) s2 100 / trunc s3
+	l3 5 =
+	{if}
+		l2 100 * 5 (M.V.GetDepotStringGlobal) $StrToFloat 0 max (S.L.IBIS_Linie_Suffix) + (S.L.IBIS_Linie_Complex)
+	{endif}
+	l3 8 =
+	{if}
+		l2 100 * 4 (M.V.GetDepotStringGlobal) $StrToFloat 0 max (S.L.IBIS_Linie_Suffix) + (S.L.IBIS_Linie_Complex)
+	{endif}
+	l3 9 =
+	{if}
+		l2 100 * 3 (M.V.GetDepotStringGlobal) $StrToFloat 0 max (S.L.IBIS_Linie_Suffix) + (S.L.IBIS_Linie_Complex)
+	{endif}
+	(M.L.IBIS_SetComplexLineString)
+
+' Entwerter-Busstop-Offset festlegen (pseudo-Zufall aus Linien-Code und Route-Index):
+
+	(L.L.IBIS_LinieKurs) 100 * (L.L.IBIS_RouteIndex) + 10000 * sin 10 * 15 + trunc (S.L.IBIS_busstop_offset)
+
+{end}
+
+{macro:IBIS_RefreshTerminusText}
+	(L.L.IBIS_TerminusIndex) 5 (M.V.GetTerminusString) (S.$.IBIS_terminus_name)
+{end}
+
+{macro:IBIS_SetComplexLineString}
+'Linie/Kurs:
+	(L.L.IBIS_LinieKurs) s0 0 = !
+	{if}
+		l0 "03" $IntToStrEnh
+	{else}
+		"   "
+	{endif}
+'Linien-Suffix:
+	(L.L.IBIS_Linie_Suffix) s0 0 = !
+	{if}
+		l0 "02" $IntToStrEnh $+
+	{else}
+		"  " $+
+	{endif}
+	(S.$.IBIS_Complex_Line)
+{end}
+
+{macro:IBIS-2_reset}
+	0 (S.L.IBIS_Route)
+	-1 (S.L.IBIS_RouteIndex)
+	0 (S.L.IBIS_TerminusCode)
+	0 (S.L.IBIS_TerminusIndex)
+	"" (S.$.IBIS_terminus_name)
+	0 (S.L.IBIS_busstop_index)
+	"" (S.$.IBIS_cabindisplay)
+	0 (S.L.IBIS_busstop)
+	0 (S.L.IBIS_busstop_entwerter_soll)
+	0 (S.L.IBIS_busstop_entwerter_ist)
+	"" (S.$.act_busstop)
+	"" (S.$.IBIS)
+	"" (S.$.IBIS_busstop_name)
+	(T.L.ev_IBIS-startupsound)
+	(T.L.ev_IBIS_entwerter)
+	0 (S.L.IBIS_mode)
+	"" (S.$.Haltestelle)
+
+	"" (S.$.Tecmic_L1)
+	"" (S.$.Tecmic_L4)
+	"" (S.$.Tecmic_Linha)
+	"" (S.$.Tecmic_Rota)
+	"" (S.$.Tecmic_Destino)
+	"" (S.$.Tecmic_Paragem)
+	"" (S.$.Tecmic_EstadoMin)
+	"" (S.$.Tecmic_Estado)
+	"" (S.$.Tecmic_DataHora)
+	"" (S.$.Tecmic_Introduzir)
+{end}
+
+{macro:Fahrscheindrucker-Haltestelle}
+	(L.L.IBIS_busstop_index) 0 (M.V.GetBusstopString) (S.$.Haltestelle)
+{end}
